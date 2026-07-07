@@ -31,8 +31,11 @@ Luego abre `http://localhost:8823` en el navegador.
 - **Controles inferiores**: anterior/siguiente diapositiva, retroceder/avanzar
   segmento, reproducir/pausar, repetir diapositiva, barra de progreso (clic para
   saltar), velocidad (0.75×–2×), volumen y reproducción automática on/off.
-- **Índice lateral** (botón *Índice*): navegación por módulos, con progreso y
-  marca de diapositivas vistas (se guarda en el navegador).
+- **Índice lateral** (botón *Índice*): navegación por módulos **retráctiles**
+  (clic en el título del módulo para plegar/desplegar), con progreso, contador
+  por módulo y marca de diapositivas vistas (se guarda en el navegador).
+- **Tamaño de texto** (control A− / A+ en la barra superior): 4 niveles
+  (Compacto, Normal, Grande, Extra grande); la preferencia se recuerda.
 - **Transcripción** (botón *Transcripción*): texto de la narración, resaltando
   el segmento en curso.
 - **Caso de estudio**: botón en la barra superior y en las diapositivas del caso,

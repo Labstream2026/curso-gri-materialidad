@@ -26,8 +26,18 @@
     scheduledReveals: [],
     plan: [],
     audioGen: 0,
+    tsIndex: 1,
+    collapsedMods: {},
     booted: false,
   };
+
+  // niveles de tamaño de texto (control A-/A+)
+  const TS_LEVELS = [
+    { v: 0.92, label: 'Compacto' },
+    { v: 1.06, label: 'Normal' },
+    { v: 1.2, label: 'Grande' },
+    { v: 1.34, label: 'Extra grande' },
+  ];
 
   // ---------- def combinada (auto + overrides) ----------
   function mergedDef(s) {
@@ -48,7 +58,8 @@
       localStorage.setItem(LS_KEY, JSON.stringify({
         i: State.i, visited: State.visited, quizAnswered: State.quizAnswered,
         quizGate: State.quizGatePassed, rate: State.rate, volume: State.volume,
-        autoplay: State.autoplay, t: Date.now(),
+        autoplay: State.autoplay, tsIndex: State.tsIndex, collapsedMods: State.collapsedMods,
+        t: Date.now(),
       }));
     } catch (e) {}
   }
@@ -81,12 +92,15 @@
       State.rate = saved.rate || 1;
       State.volume = saved.volume == null ? 1 : saved.volume;
       State.autoplay = saved.autoplay !== false;
+      if (typeof saved.tsIndex === 'number') State.tsIndex = saved.tsIndex;
+      State.collapsedMods = saved.collapsedMods || {};
     }
 
     buildSidebar();
     bindControls();
     bindKeys();
     setupResponsive();
+    applyTextSize();
     fitStage();
     window.addEventListener('resize', () => { fitStage(); });
 
@@ -115,6 +129,20 @@
   // ============================================================
   //  RESPONSIVE (paneles como overlay en móvil)
   // ============================================================
+  // ---------- tamaño de texto ----------
+  function applyTextSize() {
+    const lvl = TS_LEVELS[clamp(State.tsIndex, 0, TS_LEVELS.length - 1)];
+    const stage = $('#stage');
+    if (stage) stage.style.setProperty('--ts', String(lvl.v));
+    const lbl = $('#ts-label'); if (lbl) lbl.textContent = lvl.label;
+    const dn = $('#btn-ts-down'); if (dn) dn.disabled = State.tsIndex <= 0;
+    const up = $('#btn-ts-up'); if (up) up.disabled = State.tsIndex >= TS_LEVELS.length - 1;
+  }
+  function bumpTextSize(dir) {
+    State.tsIndex = clamp(State.tsIndex + dir, 0, TS_LEVELS.length - 1);
+    applyTextSize(); saveProgress();
+  }
+
   const isMobile = () => window.matchMedia('(max-width:900px)').matches;
   function setupResponsive() {
     // scrim para cerrar overlays en móvil
@@ -160,21 +188,40 @@
   function buildSidebar() {
     const list = $('#sb-list');
     list.innerHTML = '';
-    let curMod = -1;
+    let curMod = -1, group = null;
     State.slides.forEach((s, idx) => {
       if (s.module !== curMod) {
         curMod = s.module;
-        list.appendChild(el('div', 'sb-mod', State.model.modules[curMod]));
+        const mod = curMod;
+        const collapsed = !!State.collapsedMods[mod];
+        const head = el('button', 'sb-mod' + (collapsed ? ' collapsed' : ''));
+        head.dataset.mod = mod;
+        head.innerHTML = '<span class="caret">▾</span><span class="mt">' + esc(State.model.modules[mod]) + '</span><span class="mcount"></span>';
+        head.onclick = () => toggleModule(mod);
+        list.appendChild(head);
+        group = el('div', 'sb-group' + (collapsed ? ' collapsed' : ''));
+        group.dataset.mod = mod;
+        list.appendChild(group);
       }
       const item = el('button', 'sb-item');
       item.dataset.idx = idx;
+      item.dataset.mod = curMod;
       const badge = s.type === 'quiz' ? '<span class="qz">QUIZ</span>' : '';
       const label = sidebarLabel(s);
       item.innerHTML = '<span class="st">○</span><span class="n">' + label + '</span>' + badge;
       item.onclick = () => { goTo(idx, true); if (isMobile()) closePanels(); };
-      list.appendChild(item);
+      (group || list).appendChild(item);
     });
     refreshSidebar();
+  }
+  const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  function toggleModule(mod) {
+    State.collapsedMods[mod] = !State.collapsedMods[mod];
+    const collapsed = State.collapsedMods[mod];
+    $$('.sb-group[data-mod="' + mod + '"]').forEach(g => g.classList.toggle('collapsed', collapsed));
+    $$('.sb-mod[data-mod="' + mod + '"]').forEach(h => h.classList.toggle('collapsed', collapsed));
+    saveProgress();
   }
   function sidebarLabel(s) {
     if (s.def && s.def.navTitle) return s.def.navTitle;
@@ -184,6 +231,12 @@
     return t.length > 46 ? t.slice(0, 44) + '…' : t;
   }
   function refreshSidebar() {
+    const curMod = State.slides[State.i] && State.slides[State.i].module;
+    // auto-expandir el módulo de la diapositiva actual
+    if (curMod != null && State.collapsedMods[curMod]) { State.collapsedMods[curMod] = false; }
+    $$('.sb-group').forEach(g => g.classList.toggle('collapsed', !!State.collapsedMods[+g.dataset.mod]));
+    $$('.sb-mod').forEach(h => h.classList.toggle('collapsed', !!State.collapsedMods[+h.dataset.mod]));
+
     $$('.sb-item').forEach(it => {
       const idx = +it.dataset.idx;
       const s = State.slides[idx];
@@ -191,6 +244,13 @@
       const done = State.visited[s.id];
       it.classList.toggle('done', !!done);
       $('.st', it).textContent = done ? '✓' : (idx === State.i ? '▸' : '○');
+    });
+    // contador por módulo (vistas / total)
+    $$('.sb-mod').forEach(h => {
+      const mod = +h.dataset.mod;
+      const items = State.slides.filter(s => s.module === mod);
+      const dn = items.filter(s => State.visited[s.id]).length;
+      const c = $('.mcount', h); if (c) c.textContent = dn + '/' + items.length;
     });
     const total = State.slides.length;
     const done = Object.keys(State.visited).length;
@@ -687,6 +747,8 @@
     };
     $('#btn-anexo').onclick = () => window.open('anexos/Caso-de-estudio-Alimentos-SA.pdf', '_blank');
     $('#btn-fs').onclick = toggleFullscreen;
+    $('#btn-ts-down').onclick = () => bumpTextSize(-1);
+    $('#btn-ts-up').onclick = () => bumpTextSize(1);
 
     $('#rate-sel').onchange = (e) => { State.rate = parseFloat(e.target.value); if (State.audio) State.audio.playbackRate = State.rate; saveProgress(); };
     $('#vol').oninput = (e) => { State.volume = parseFloat(e.target.value); if (State.audio) State.audio.volume = State.volume; saveProgress(); };

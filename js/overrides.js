@@ -124,35 +124,25 @@
       '<div class="tl4"><div class="bar" data-step="always"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>' + html + '</div>';
   };
 
-  // ---- caso: cadena de valor (slide 45) ----
+  // ---- caso: cadena de valor (slide 45) — ilustración del PPT ----
   V.casechain = function (s, d) {
-    const stages = [
-      { t: 'Abastecimiento', ic: SVG.box, img: 'image109.png' },
-      { t: 'Operación', ic: SVG.factory, img: '' },
-      { t: 'Distribución y venta', ic: SVG.truck, img: '' },
-    ];
-    const cols = stages.map((st, i) =>
-      '<div style="flex:1;text-align:center" data-step="' + i + '">' +
-      '<div style="font-size:22px;font-weight:bold;color:#1D2634;margin-bottom:20px">' + esc(st.t) + '</div>' +
-      '<div style="width:150px;height:150px;margin:0 auto;border-radius:16px;background:var(--blue);display:flex;align-items:center;justify-content:center">' +
-      '<div style="width:78px;height:78px;fill:#fff">' + st.ic + '</div></div></div>' +
-      (i < 2 ? '<div style="align-self:center;color:var(--gray-mid);font-size:44px;font-weight:bold" data-step="' + i + '">»</div>' : '')
-    ).join('');
     return caseTag('Caso de estudio') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:180px;bottom:120px;display:flex;align-items:center;gap:10px">' + cols + '</div>' +
-      anexoCTA();
+      '<div style="position:absolute;left:112px;right:64px;top:150px;bottom:120px;display:flex;align-items:center;justify-content:center" data-step="0">' +
+      '<img src="' + IMG + 'cadena-valor.png" alt="Cadena de valor: abastecimiento, operación, distribución y venta" style="max-width:100%;max-height:100%;object-fit:contain">' +
+      '</div>' + anexoCTA();
   };
 
-  // ---- caso: detalle de etapa (slides 46,47) ----
+  // ---- caso: detalle de etapa (slides 46,47) — ilustración PPT + texto ----
   V.casedetail = function (s, d) {
-    const stg = { abastecimiento: { t: 'Abastecimiento', ic: SVG.box }, operacion: { t: 'Operación', ic: SVG.factory } }[d.stage] || { t: 'Caso de estudio', ic: SVG.clip };
+    const label = { abastecimiento: 'Abastecimiento', operacion: 'Operación' }[d.stage] || 'Caso de estudio';
     return caseTag('Caso de estudio') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:150px;bottom:110px;display:flex;gap:34px;align-items:center">' +
-      '<div style="flex:0 0 230px;text-align:center" data-step="always">' +
-      '<div style="width:180px;height:180px;margin:0 auto 16px;border-radius:20px;background:var(--blue);display:flex;align-items:center;justify-content:center"><div style="width:92px;height:92px;fill:#fff">' + stg.ic + '</div></div>' +
-      '<div style="font-size:24px;font-weight:bold;color:var(--blue)">' + esc(stg.t) + '</div></div>' +
-      '<div class="callout" data-step="always" style="flex:1;font-size:15.5px;line-height:1.6;max-height:420px;overflow-y:auto">' + esc(caseText(d.stage)) + '</div>' +
-      '</div>' + anexoCTA();
+      '<div style="position:absolute;left:112px;right:64px;top:110px;bottom:64px;display:flex;flex-direction:column;gap:14px">' +
+      '<div data-step="always" style="flex:0 0 190px;display:flex;align-items:center;justify-content:center">' +
+      '<img src="' + IMG + 'cadena-valor.png" alt="Cadena de valor" style="max-width:78%;max-height:100%;object-fit:contain"></div>' +
+      '<div style="display:flex;gap:16px;align-items:flex-start;flex:1;min-height:0">' +
+      '<div style="flex:0 0 210px;font-size:23px;font-weight:bold;color:var(--blue)" data-step="always">' + esc(label) + '</div>' +
+      '<div class="callout" data-step="always" style="flex:1;line-height:1.5;overflow-y:auto;max-height:100%">' + esc(caseText(d.stage)) + '</div>' +
+      '</div></div>' + anexoCTA();
   };
   function caseText(stage) {
     if (stage === 'abastecimiento') return 'En la etapa de abastecimiento, la compañía enfrenta desafíos relacionados con el impacto ambiental de sus prácticas. Depende de una red diversa de proveedores en distintas regiones del país y del extranjero, lo que genera preocupaciones sobre la sostenibilidad de la producción de materias primas, el uso de agua y tierra, y el uso de agroquímicos. No son claras las condiciones laborales de los proveedores ni el cumplimiento normativo, generando inquietudes sobre derechos humanos. La organización inició un plan para evaluar a sus proveedores y sus prácticas ASG.';
@@ -239,7 +229,7 @@
       '<div data-step="0"><div style="font-size:19px;color:#2A3240;margin-bottom:22px">¿De dónde nace el concepto de desarrollo sostenible?</div>' +
       '<div class="quote">“Satisfacer las necesidades del presente sin comprometer la habilidad de las futuras generaciones de satisfacer sus necesidades propias.”</div>' +
       '<div style="margin-top:14px;color:#5B6675;font-size:14px">— Comisión Brundtland, Naciones Unidas, 1987</div></div>' +
-      '<div class="imgbox" data-step="1"><img src="' + IMG + 'image14.jpeg" style="border-radius:14px;max-height:420px" alt=""></div>' +
+      '<div class="imgbox" data-step="1"><img src="' + IMG + 'sostenible.jpg" style="border-radius:14px;max-height:440px" alt="Carretera con paneles solares y aerogenerador en un bosque"></div>' +
       '</div></div>';
   };
 
@@ -263,6 +253,17 @@
     return gri(false) +
       '<div class="sl-panel"><div class="pt">Resumen</div></div>' +
       '<div class="sl-body"><div style="font-size:16px;color:#5B6675;margin-bottom:18px" data-step="always">Un recorrido para realizar un análisis de materialidad conforme a los Estándares GRI:</div><div class="sum-list" style="height:auto">' + rows + '</div></div>';
+  };
+
+  // ---- agrupación de impactos en temas (slide 58) — diagrama del PPT ----
+  V.agrupacion = function (s, d) {
+    return gri(false) +
+      '<div class="sl-panel" style="width:340px"><div class="pt">Agrupación de los impactos en temas</div></div>' +
+      '<div class="sl-body" style="left:390px;right:48px;top:70px;bottom:40px;display:flex;flex-direction:column;gap:16px">' +
+      '<div class="callout" data-step="0">La organización puede <b>agrupar los impactos en temas</b>, según categorías generales por actividad comercial, grupos de interés, tipo de relación comercial, o por un recurso económico o medioambiental.</div>' +
+      '<div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0" data-step="1">' +
+      '<img src="' + IMG + 'agrupacion.png" alt="Ejemplo de agrupación de temas del sector (GRI 11): Medio Ambiente, Empleo, Ética y gobierno, Derechos Humanos" style="max-width:100%;max-height:100%;object-fit:contain">' +
+      '</div></div>';
   };
 
   // ---- contenidos GRI 3-x (slides 91, 92) ----
@@ -307,6 +308,7 @@
     23: { kind: 'doublemat', navTitle: 'Análisis de materialidad' },
     24: { kind: 'timeline4', navTitle: 'Proceso de determinación (4 pasos)' },
     54: { kind: 'bullets', title: 'Comprensión de los impactos reales y potenciales', sub: 'Tips de reporte', navTitle: 'Impactos reales y potenciales · Tips', bullets: ['Recurrir a distintas fuentes de información.', 'Considerar los impactos descritos en los Estándares Sectoriales GRI aplicables.', 'Evaluar el contexto e identificar los impactos de forma continua.', 'Priorizar los impactos negativos, porque son los que pueden causar mayor afectación.', 'No limitarse a los asuntos o programas que la organización ya está gestionando.'] },
+    58: { kind: 'agrupacion', navTitle: 'Agrupación de impactos en temas' },
     63: { kind: 'divider', variant: 'step', title: 'Paso 3 Evaluación de impactos', navTitle: 'Paso 3 · Evaluación de impactos' },
     65: { kind: 'bullets', title: '¿Cómo evaluar los impactos?', navTitle: '¿Cómo evaluar los impactos?', bullets: ['Impactos positivos — Escala y alcance: cuán beneficioso es el impacto y su extensión sobre individuos o recursos.', 'Impactos positivos — Probabilidad: posibilidad de que el impacto se produzca.', 'Impactos negativos — Gravedad: escala, alcance y carácter irremediable del daño.', 'Impactos negativos — Probabilidad: posibilidad de que el impacto se produzca.', 'En impactos sobre los derechos humanos, la gravedad prevalece sobre la probabilidad.'] },
     49: { kind: 'caseinfo', navTitle: 'Caso: información e indicadores' },
