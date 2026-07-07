@@ -25,6 +25,7 @@
     partStartTs: 0,
     scheduledReveals: [],
     plan: [],
+    audioGen: 0,
     booted: false,
   };
 
@@ -223,7 +224,14 @@
     if (shouldPlay) { playFromPart(0); }
     else { State.playing = false; updatePlayBtn(); prepareStaticReveal(s); }
   }
-  function next() {
+  function next(opts) {
+    const s = State.slides[State.i];
+    // Gate de quiz: no dejar saltar un quiz sin responder desde el botón/tecla Siguiente.
+    // (El índice lateral sigue permitiendo navegar libremente con goTo.)
+    if (s && s.type === 'quiz' && !State.quizGatePassed[s.id] && !(opts && opts.force)) {
+      markWaitingQuiz(true);
+      return;
+    }
     if (State.i >= State.slides.length - 1) { showEndState(); return; }
     goTo(State.i + 1, true);
   }
@@ -379,16 +387,21 @@
     a.playbackRate = State.rate;
     a.volume = State.volume;
     State.audio = a;
+    const gen = ++State.audioGen;              // token: descarta handlers de audios obsoletos
+    const fresh = () => State.audio === a && State.audioGen === gen;
 
     a.addEventListener('loadedmetadata', () => {
+      if (!fresh()) return;
       scheduleReveals(part, a.duration || estDuration(part));
     });
-    a.addEventListener('ended', onPartEnded);
+    a.addEventListener('ended', () => { if (fresh()) onPartEnded(); });
     a.addEventListener('error', () => {
+      if (!fresh()) return;
       // si falta el audio, usa duración estimada y revela igual
       const dur = estDuration(part);
       scheduleReveals(part, dur);
-      setTimeout(onPartEnded, dur * 1000 / State.rate);
+      const t = setTimeout(() => { if (fresh()) onPartEnded(); }, dur * 1000 / State.rate);
+      State.revealTimers.push(t);            // rastreado para poder cancelarlo
     });
 
     State.playing = true;
@@ -429,8 +442,10 @@
   function onPartEnded() {
     const s = State.slides[State.i];
     const parts = s.parts || [];
+    const curPart = parts[State.partIdx];
+    if (!curPart) return;   // guarda: parte fuera de rango (audio obsoleto tras saltar)
     // asegura que los steps de esta parte queden revelados
-    ((State.plan && State.plan[State.partIdx]) || parts[State.partIdx].steps || []).forEach(revealStep);
+    ((State.plan && State.plan[State.partIdx]) || curPart.steps || []).forEach(revealStep);
     if (State.partIdx < parts.length - 1) {
       // ¿siguiente parte es feedback de quiz sin responder?
       const nextPart = parts[State.partIdx + 1];
@@ -446,10 +461,11 @@
       // fin de la diapositiva
       State.playing = false; updatePlayBtn();
       stopProgressLoop();
-      if (s.type === 'quiz') State.quizGatePassed[s.id] = true;
+      // solo se libera el gate del quiz si el usuario realmente respondió
+      if (s.type === 'quiz' && State.quizAnswered[s.id]) State.quizGatePassed[s.id] = true;
       saveProgress();
       if (State.autoplay && canAutoAdvance(s)) {
-        setTimeout(() => { if (State.playing === false && State.slides[State.i] === s) next(); }, 650);
+        setTimeout(() => { if (State.playing === false && State.slides[State.i] === s) next({ force: true }); }, 650);
       }
     }
   }
@@ -458,7 +474,14 @@
 
   // ---------- control de audio ----------
   function stopAudioElementOnly() {
-    if (State.audio) { try { State.audio.pause(); } catch (e) {} State.audio.onended = null; State.audio = null; }
+    if (State.audio) {
+      const a = State.audio;
+      State.audioGen++;              // invalida cualquier handler pendiente de este audio
+      try { a.pause(); } catch (e) {}
+      a.onended = a.onerror = a.onloadedmetadata = null;
+      try { a.removeAttribute('src'); a.load(); } catch (e) {}
+      State.audio = null;
+    }
   }
   function stopAudio() {
     stopAudioElementOnly();
@@ -478,9 +501,11 @@
       pauseProgressLoop();
       updatePlayBtn();
     } else {
-      if (State.audio && State.audio.currentime !== undefined && !State.audio.ended && State.audio.src) {
+      // reanudar el audio en pausa si sigue siendo válido; si no, recargar la parte
+      if (State.audio && State.audio.src && !State.audio.ended && State.audio.readyState > 0) {
         State.audio.playbackRate = State.rate;
-        State.audio.play().then(() => { State.playing = true; resumeProgressLoop(); updatePlayBtn(); }).catch(() => {});
+        State.playing = true; updatePlayBtn();
+        State.audio.play().then(() => { resumeProgressLoop(); }).catch(() => { playFromPart(State.partIdx); });
       } else {
         playFromPart(State.partIdx);
       }
@@ -518,7 +543,7 @@
     const parts = s.parts || [];
     const fIdx = parts.findIndex(p => p.phase === 'f');
     if (fIdx >= 0) { State.partIdx = fIdx; loadAndPlayPart(); }
-    else { State.quizGatePassed[s.id] = true; if (State.autoplay) setTimeout(next, 800); }
+    else { State.quizGatePassed[s.id] = true; if (State.autoplay) setTimeout(() => next({ force: true }), 800); }
   }
 
   function markWaitingQuiz(on) {

@@ -11,9 +11,9 @@
   V.stdsystem = function (s, d) {
     const book = (cls, code) => '<div class="std-book"><div class="bk">' + code + '</div>';
     const uni = [
-      ['GRI 1', 'Requerimientos y principios para el uso de los Estándares GRI'],
-      ['GRI 2', 'Contenidos sobre la organización informante'],
-      ['GRI 3', 'Contenidos y orientaciones sobre los temas materiales'],
+      ['GRI 1', 'Fundamentos — requerimientos y principios para el uso de los Estándares'],
+      ['GRI 2', 'Contenidos Generales — información sobre la organización informante'],
+      ['GRI 3', 'Temas Materiales — cómo determinar y gestionar los temas materiales'],
     ];
     const uniRows = uni.map(u => '<div class="std-book"><div class="bk">' + u[0] + '</div><div>' + esc(u[1]) + '</div></div>').join('');
     const grid = (codes) => '<div class="std-grid">' + codes.map(c => '<div class="bk">' + c + '</div>').join('') + '</div>';
@@ -111,7 +111,7 @@
       { pos: 'top', ic: '', b: 'Entender el contexto de la organización', t: 'Usar los Estándares Sectoriales para entender el contexto de los sectores', color: 'var(--blue)' },
       { pos: 'bot', ic: SVG.people, b: 'Identificar impactos reales y potenciales', t: 'Considerar los temas descritos en los Estándares Sectoriales', color: 'var(--teal)' },
       { pos: 'top', ic: SVG.people, b: 'Evaluar la importancia de los impactos', t: 'Contar con la participación de grupos de interés y expertos', color: 'var(--orange-strong)' },
-      { pos: 'bot', ic: SVG.target, b: 'Determinar los temas materiales', t: 'Analizar los temas con expertos y usuarios de la información', color: 'var(--purple)' },
+      { pos: 'bot', ic: SVG.target, b: 'Priorizar los impactos más significativos', t: 'Seleccionar los impactos prioritarios para determinar los temas materiales sobre los que informar', color: 'var(--purple)' },
     ];
     const lefts = ['0%', '25%', '50%', '75%'];
     const html = cells.map((c, i) =>
@@ -171,10 +171,18 @@
       ['Participación de mercado', '10 %', 'Sin variaciones significativas en los últimos años.'],
     ];
     const rows = info.map((r, i) => '<tr data-step="' + i + '"><td class="lead">' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>').join('');
+    const indicadores = [
+      'Emisiones alcance 1 y 2', 'Tasa de reciclaje', 'Consumo de agua', 'Impacto en la biodiversidad',
+      'Nutrición y etiquetado', 'Relacionamiento con la comunidad', 'Satisfacción de empleados',
+      'Tasa de accidentalidad', 'Compras a proveedores locales', 'Evaluación de proveedores', 'Valor económico distribuido',
+    ];
+    const indList = indicadores.map((t, i) => '<div class="vitem" data-step="' + i + '" style="font-size:12.5px;gap:9px"><div class="bd-ic" style="width:24px;height:24px;flex:0 0 24px;font-size:11px">' + (i + 1) + '</div><div>' + esc(t) + '</div></div>').join('');
     return caseTag('Caso de estudio') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:120px;bottom:44px">' +
-      '<div style="font-size:16px;font-weight:bold;color:var(--blue);margin-bottom:10px" data-step="always">Información general de la organización</div>' +
-      '<table class="tbl compact"><thead><tr><th>Característica</th><th>Información</th><th>Otros datos relevantes</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<div style="position:absolute;left:112px;right:64px;top:118px;bottom:40px;display:flex;gap:26px">' +
+      '<div style="flex:1.15;min-width:0"><div style="font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:9px" data-step="always">Información general de la organización</div>' +
+      '<table class="tbl compact"><thead><tr><th>Característica</th><th>Información</th><th>Otros datos</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div style="flex:0.85;min-width:0"><div style="font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:9px" data-step="always">Indicadores de desempeño</div>' +
+      '<div class="vlist" style="height:auto;gap:6px">' + indList + '</div></div>' +
       '</div>' + anexoCTA();
   };
 
@@ -282,6 +290,7 @@
     1: { kind: 'cover', h1: 'Materialidad de impacto', sub: 'Tutorías GRI', photo: 'image2.jpeg', navTitle: 'Portada' },
     3: { kind: 'toc', moduleLabel: 'Contenido de la tutoría', items: ['Módulo 1: Introducción a los Estándares GRI', 'Módulo 2: Contexto del análisis de materialidad', 'Módulo 3: Proceso para la definición de la materialidad', 'Módulo 4: Determinación de la información a reportar'], numbered: true, navTitle: 'Contenido de la tutoría' },
     6: { kind: 'panelBullets', title: '¿Qué es el GRI?', bullets: ['El GRI (Global Reporting Initiative) es una organización internacional independiente que ayuda a las organizaciones a asumir la responsabilidad de sus impactos.', 'Proporciona un lenguaje común global para comunicar los impactos en la economía, el medio ambiente y las personas, incluidos los derechos humanos.', 'Sus Estándares permiten informar de forma transparente sobre las contribuciones, positivas o negativas, al desarrollo sostenible.'] },
+    4: { kind: 'divider', variant: 'module', title: 'Módulo 1: Introducción a los Estándares GRI', navTitle: 'Módulo 1 (intro)' },
     7: { kind: 'stdsystem', navTitle: 'Sistema de los Estándares GRI' },
     8: { kind: 'conceptDef', active: 0, def: 'Se refiere a los efectos que una organización tiene o podría tener sobre la economía, el medio ambiente y las personas, incluidos sus derechos humanos. Pueden ser positivos o negativos, reales o potenciales, de corto o largo plazo, intencionados o no, reversibles o irreversibles. Los impactos en la economía, el medio ambiente y las personas están interrelacionados.' },
     9: { kind: 'conceptDef', active: 1, def: 'Es el proceso que una organización sigue para identificar, prevenir, mitigar y gestionar sus impactos. Debe abordar los impactos negativos potenciales mediante prevención o mitigación, y los reales mediante remediación. Los impactos se priorizan según su gravedad y probabilidad; en derechos humanos, la gravedad es el factor principal.' },
@@ -297,7 +306,9 @@
     22: { kind: 'sostenible', navTitle: 'Desarrollo sostenible' },
     23: { kind: 'doublemat', navTitle: 'Análisis de materialidad' },
     24: { kind: 'timeline4', navTitle: 'Proceso de determinación (4 pasos)' },
-    45: { kind: 'casechain', navTitle: 'Caso de estudio: cadena de valor' },
+    54: { kind: 'bullets', title: 'Comprensión de los impactos reales y potenciales', sub: 'Tips de reporte', navTitle: 'Impactos reales y potenciales · Tips', bullets: ['Recurrir a distintas fuentes de información.', 'Considerar los impactos descritos en los Estándares Sectoriales GRI aplicables.', 'Evaluar el contexto e identificar los impactos de forma continua.', 'Priorizar los impactos negativos, porque son los que pueden causar mayor afectación.', 'No limitarse a los asuntos o programas que la organización ya está gestionando.'] },
+    63: { kind: 'divider', variant: 'step', title: 'Paso 3 Evaluación de impactos', navTitle: 'Paso 3 · Evaluación de impactos' },
+    65: { kind: 'bullets', title: '¿Cómo evaluar los impactos?', navTitle: '¿Cómo evaluar los impactos?', bullets: ['Impactos positivos — Escala y alcance: cuán beneficioso es el impacto y su extensión sobre individuos o recursos.', 'Impactos positivos — Probabilidad: posibilidad de que el impacto se produzca.', 'Impactos negativos — Gravedad: escala, alcance y carácter irremediable del daño.', 'Impactos negativos — Probabilidad: posibilidad de que el impacto se produzca.', 'En impactos sobre los derechos humanos, la gravedad prevalece sobre la probabilidad.'] },
     49: { kind: 'caseinfo', navTitle: 'Caso: información e indicadores' },
     60: {
       kind: 'impacttable', stage: 'abastecimiento', navTitle: 'Impactos: abastecimiento',
