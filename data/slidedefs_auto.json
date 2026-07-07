@@ -1,0 +1,951 @@
+{
+ "1": {
+  "kind": "bullets",
+  "title": "Materialidad de impacto – tutorías GRI",
+  "navTitle": null,
+  "bullets": [
+   "Materialidad de impacto – Tutorías GRI"
+  ]
+ },
+ "2": {
+  "kind": "objectives",
+  "title": "Objetivos de aprendizaje",
+  "items": [
+   "Entender los conceptos básicos relacionados con el proceso para determinar los temas materiales.",
+   "Entender el proceso para la definición de la materialidad de impacto. Comprender cómo se identifican y priorizan los grupos de interés.",
+   "Comprender y aplicar los criterios para identificar, evaluar y priorizar temas materiales para la elaboración del reporte de sostenibilidad bajo los Estándares GRI.",
+   "Aplicar mediante ejemplos prácticos el proceso y los pasos para determinar los temas materiales."
+  ],
+  "navTitle": null,
+  "bullets": [
+   "Entender los conceptos básicos relacionados con el proceso para determinar los temas materiales.",
+   "Entender el proceso para la definición de la materialidad de impacto. Comprender cómo se identifican y priorizan los grupos de interés.",
+   "Comprender y aplicar los criterios para identificar, evaluar y priorizar temas materiales para la elaboración del reporte de sostenibilidad bajo los Estándares GRI.",
+   "Aplicar mediante ejemplos prácticos el proceso y los pasos para determinar los temas materiales."
+  ]
+ },
+ "3": {
+  "kind": "toc",
+  "title": "Contenido de la tutoría",
+  "items": [
+   "Módulo 1: Introducción a los Estándares GRI",
+   "Módulo 2: Contexto del análisis de materialidad",
+   "Módulo 3: Proceso para la definición de la materialidad",
+   "Módulo 4: Determinación de la información a reportar."
+  ],
+  "big": true,
+  "navTitle": null,
+  "bullets": [
+   "Módulo 1: Introducción a los Estándares GRI",
+   "Módulo 2: Contexto del análisis de materialidad",
+   "Módulo 3: Proceso para la definición de la materialidad",
+   "Módulo 4: Determinación de la información a reportar."
+  ]
+ },
+ "4": {
+  "kind": "divider",
+  "title": "Módulo 1: Introducción de los Estándares GRI",
+  "variant": "module",
+  "navTitle": null,
+  "bullets": []
+ },
+ "5": {
+  "kind": "toc",
+  "title": "Introducción a los Estándares GRI",
+  "items": [
+   "¿Qué es el Global Reporting Iniciative (GRI)?",
+   "Sistema de los Estándares GRI",
+   "Conceptos claves para la aplicación de los Estándares",
+   "¿Cómo se reporta con GRI?"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "¿Qué es el Global Reporting Iniciative (GRI)?",
+   "Sistema de los Estándares GRI",
+   "Conceptos claves para la aplicación de los Estándares",
+   "¿Cómo se reporta con GRI?"
+  ]
+ },
+ "6": {
+  "kind": "bullets",
+  "title": "¿Qué es el GRI?",
+  "navTitle": null,
+  "bullets": [
+   "GRI (Global Reporting Initiative) es una organización internacional independiente que ayuda a las Organizaciones y otras organizaciones a asumir la responsabilidad de sus impactos, proporcionándoles un lenguaje común global para comunicar esos impactos."
+  ]
+ },
+ "7": {
+  "kind": "bullets",
+  "title": "Sistema de los Estándares GRI",
+  "navTitle": null,
+  "bullets": [
+   "(imagen con los 3 grupos de estándares)"
+  ]
+ },
+ "8": {
+  "kind": "bullets",
+  "title": "Conceptos clave",
+  "navTitle": null,
+  "bullets": [
+   "Impacto",
+   "Debida Diligencia",
+   "Temas materiales",
+   "Grupos de interés"
+  ]
+ },
+ "9": {
+  "kind": "bullets",
+  "title": "Conceptos clave",
+  "navTitle": null,
+  "bullets": [
+   "Impacto",
+   "Debida Diligencia",
+   "Temas materiales",
+   "Grupos de interés"
+  ]
+ },
+ "10": {
+  "kind": "bullets",
+  "title": "Conceptos clave",
+  "navTitle": null,
+  "bullets": [
+   "Impacto",
+   "Debida Diligencia",
+   "Temas materiales",
+   "Grupos de interés"
+  ]
+ },
+ "11": {
+  "kind": "bullets",
+  "title": "Conceptos clave",
+  "navTitle": null,
+  "bullets": [
+   "Impacto",
+   "Debida Diligencia",
+   "Temas materiales",
+   "Grupos de interés"
+  ]
+ },
+ "12": {
+  "kind": "bullets",
+  "title": "¿Cómo se reporta usando los Estándares GRI?",
+  "navTitle": null,
+  "bullets": [
+   "De conformidad",
+   "Aplicar los principios para la elaboración de informes"
+  ]
+ },
+ "13": {
+  "kind": "bullets",
+  "title": "¿Cómo se reporta usando los Estándares GRI?",
+  "navTitle": null,
+  "bullets": [
+   "De conformidad",
+   "Aplicar los principios para la elaboración de informes",
+   "Presentar los contenidos correspondientes a GRI 2"
+  ]
+ },
+ "14": {
+  "kind": "bullets",
+  "title": "¿Cómo se reporta usando los Estándares GRI?",
+  "navTitle": null,
+  "bullets": [
+   "De conformidad",
+   "Aplicar los principios para la elaboración de informes",
+   "Presentar los contenidos correspondientes a GRI 2",
+   "Determinar los temas materiales",
+   "Presentar los contenidos correspondientes a GRI 3"
+  ]
+ },
+ "15": {
+  "kind": "bullets",
+  "title": "¿Cómo se reporta usando los Estándares GRI?",
+  "navTitle": null,
+  "bullets": [
+   "De conformidad",
+   "Aplicar los principios para la elaboración de informes",
+   "Presentar los contenidos correspondientes a GRI 2",
+   "Determinar los temas materiales",
+   "Presentar los contenidos correspondientes a GRI 3",
+   "Presentar contenidos de los Estándares Temáticos GRI para cada tema material",
+   "Proporcionar los motivos para la omisión relativos al contenido o al requisito que la organización no pueda cumplir"
+  ]
+ },
+ "16": {
+  "kind": "bullets",
+  "title": "¿Cómo se reporta usando los Estándares GRI?",
+  "navTitle": null,
+  "bullets": [
+   "De conformidad",
+   "Aplicar los principios para la elaboración de informes",
+   "Presentar los contenidos correspondientes a GRI 2",
+   "Determinar los temas materiales",
+   "Presentar los contenidos correspondientes a GRI 3",
+   "Presentar contenidos de los Estándares Temáticos GRI para cada tema material",
+   "Proporcionar los motivos para la omisión relativos al contenido o al requisito que la organización no pueda cumplir",
+   "Publicar un índice de contenidos GRI",
+   "Proporcionar una declaración de uso",
+   "Notificar a GRI"
+  ]
+ },
+ "17": {
+  "kind": "bullets",
+  "title": "",
+  "navTitle": null,
+  "bullets": [
+   "En referencia",
+   "Publicar un índice de contenidos GRI",
+   "Proporcionar una declaración de uso",
+   "Notificar a GRI"
+  ]
+ },
+ "18": {
+  "kind": "bullets",
+  "title": "Uso de las omisiones",
+  "navTitle": null,
+  "bullets": [
+   "01 No Procede: Explique por qué se considera que el contenido o el requerimiento no procede.",
+   "02 Prohibiciones legales: Describa las prohibiciones legales específicas.",
+   "03 Restricciones de confidencialidad: Indique los problemas específicos de confidencialidad",
+   "04 Información no disponible o incompleta:",
+   "Especifique la información que no está disponible o es incompleta.",
+   "Explique por qué la información solicitada no está disponible o es incompleta.",
+   "Describa los pasos que se están dando para obtener la información y el plazo previsto para disponer de ella."
+  ]
+ },
+ "19": {
+  "kind": "learned",
+  "title": "¿Qué hemos aprendido?",
+  "items": [
+   "¿Qué es el Global Reporting Iniciative (GRI) y sus Estándares de reporte?",
+   "Cómo navegar el sistema de los Estándares GRI",
+   "Conceptos claves para la aplicación de los Estándares",
+   "Opciones para el uso de los Estándares y las omisiones"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "¿Qué es el Global Reporting Iniciative (GRI) y sus Estándares de reporte?",
+   "Cómo navegar el sistema de los Estándares GRI",
+   "Conceptos claves para la aplicación de los Estándares",
+   "Opciones para el uso de los Estándares y las omisiones"
+  ]
+ },
+ "20": {
+  "kind": "divider",
+  "title": "Módulo 2: Contexto del análisis de materialidad",
+  "variant": "module",
+  "navTitle": null,
+  "bullets": []
+ },
+ "21": {
+  "kind": "toc",
+  "title": "Contexto del análisis de materialidad",
+  "items": [
+   "El desarrollo sostenible y su relación con las organizaciones.",
+   "Definición del concepto de materialidad.",
+   "Proceso general para la definición de los temas materiales"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "El desarrollo sostenible y su relación con las organizaciones.",
+   "Definición del concepto de materialidad.",
+   "Proceso general para la definición de los temas materiales"
+  ]
+ },
+ "22": {
+  "kind": "bullets",
+  "title": "Desarrollo sostenible",
+  "navTitle": null,
+  "bullets": [
+   "¿De dónde nace el concepto de desarrollo sostenible?",
+   "“Satisfacer las necesidades del presente sin comprometer la habilidad de las futuras generaciones de satisfacer sus necesidades propias”"
+  ]
+ },
+ "23": {
+  "kind": "bullets",
+  "title": "Análisis de materialidad",
+  "navTitle": null,
+  "bullets": [
+   "El análisis de materialidad es un proceso estratégico que las organizaciones utilizan para identificar y priorizar los temas más relevantes que afectan a su negocio y a sus grupos de interés.",
+   "El enfoque de GRI en la materialidad de impacto: El GRI se centra en la materialidad de impacto, promoviendo la transparencia y la rendición de cuentas sobre cómo las actividades de las empresas afectan a los aspectos económicos, ambientales y sociales."
+  ]
+ },
+ "24": {
+  "kind": "bullets",
+  "title": "Proceso para la determinación de los temas materiales",
+  "navTitle": null,
+  "bullets": [
+   "Presentamos los cuatro pasos que una organización debería seguir para determinar sus temas materiales. Estos proporcionan orientaciones que no son requerimientos en sí mismos.",
+   "Identificar y evaluar impactos de forma continua",
+   "Contar con la participación de grupos de interés y expertos pertinentes",
+   "Entender el contexto de la organización",
+   "Identificar impactos reales y potenciales",
+   "Evaluar la importancia de los impactos",
+   "Priorizar los",
+   "impactos más significativos sobres los que presentar",
+   "información",
+   "Determinar los temas materiales sobre los que informar",
+   "Analizar los temas materiales con expertos y usuarios de la información"
+  ]
+ },
+ "25": {
+  "kind": "bullets",
+  "title": "Proceso para la determinación de los temas materiales",
+  "navTitle": null,
+  "bullets": [
+   "Revisar los temas materiales para cada reporte",
+   "Documentar el proceso",
+   "Considerar el contexto de la organización",
+   "Involucrar al máximo órgano de gobierno de la organización."
+  ]
+ },
+ "26": {
+  "kind": "prooftest",
+  "title": "¡Pongámonos a prueba!",
+  "navTitle": null,
+  "bullets": []
+ },
+ "27": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "29": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "31": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "33": {
+  "kind": "learned",
+  "title": "¿Qué hemos aprendido?",
+  "items": [
+   "El desarrollo sostenible y su relación con las actividades de las organizaciones.",
+   "Concepto de materialidad",
+   "Proceso general para la definición de los temas materiales"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "El desarrollo sostenible y su relación con las actividades de las organizaciones.",
+   "Concepto de materialidad",
+   "Proceso general para la definición de los temas materiales"
+  ]
+ },
+ "34": {
+  "kind": "divider",
+  "title": "Módulo 3: Proceso para la definición de materialidad",
+  "variant": "module",
+  "navTitle": null,
+  "bullets": []
+ },
+ "35": {
+  "kind": "toc",
+  "title": "Proceso para definición de materialidad",
+  "items": [
+   "Análisis de contexto",
+   "Identificación de impactos",
+   "Evaluación de impactos",
+   "Priorización de temas"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "Análisis de contexto",
+   "Identificación de impactos",
+   "Evaluación de impactos",
+   "Priorización de temas"
+  ]
+ },
+ "36": {
+  "kind": "divider",
+  "title": "Paso 1 Entender el contexto de la organización",
+  "variant": "step",
+  "navTitle": null,
+  "bullets": []
+ },
+ "37": {
+  "kind": "bullets",
+  "title": "¿Cómo entender el contexto de la organización?",
+  "navTitle": null,
+  "bullets": [
+   "Actividades desarrolladas",
+   "Identificar relaciones comerciales",
+   "Entender el contexto de sostenibilidad",
+   "Entender la relación con los grupos de interés"
+  ]
+ },
+ "38": {
+  "kind": "bullets",
+  "title": "Identificar las actividades desarrolladas",
+  "navTitle": null,
+  "bullets": [
+   "Propósito y estrategia de la organización",
+   "Tipos de actividades que realiza",
+   "Tipos de servicios y productos que ofrece la organización",
+   "Sectores en los que la organización tiene actividad",
+   "Información sobre empleados directos e indirectos"
+  ]
+ },
+ "39": {
+  "kind": "bullets",
+  "title": "Identificar relaciones comerciales",
+  "navTitle": null,
+  "bullets": [
+   "Tipo de relaciones que se tienen",
+   "Tipos de actividades desempeñadas por los terceros con los que se tienen relaciones comerciales.",
+   "Naturaleza de las relaciones comerciales",
+   "Ubicaciones geográficas en las que se llevan las relaciones comerciales."
+  ]
+ },
+ "40": {
+  "kind": "bullets",
+  "title": "Entender el contexto de sostenibilidad",
+  "navTitle": null,
+  "bullets": [
+   "Desafíos ambientales, sociales, económicos y de Derechos Humanos.",
+   "Cumplimiento y compromisos frente a acuerdos internacionales.",
+   "Compromisos regulatorios"
+  ]
+ },
+ "41": {
+  "kind": "bullets",
+  "title": "Entender la relación con los grupos de interés",
+  "navTitle": null,
+  "bullets": [
+   "Grupos de interés afectados",
+   "Involucrar a los grupos en el proceso de identificación de impactos",
+   "Incluir grupos que no pueden exponer su visión",
+   "Elaborar listas específicas"
+  ]
+ },
+ "42": {
+  "kind": "bullets",
+  "title": "Ejemplos de grupos de interés",
+  "navTitle": null,
+  "bullets": [
+   "Empleados",
+   "Comunidad",
+   "ONG",
+   "Proveedores",
+   "Medios",
+   "Academia",
+   "Gobierno",
+   "Clientes"
+  ]
+ },
+ "43": {
+  "kind": "bullets",
+  "title": "¿Cómo identificar y abordar los grupos de interés?",
+  "navTitle": null,
+  "bullets": [
+   "¿Cómo identificar y abordar los grupos de interés?",
+   "Tips de reporte:",
+   "Utilizar guías como la AA1000 que permite priorizar y evaluar los grupos de interés considerando aspectos como dependencia o influencia.",
+   "Otro marco es la ISO26000 que proporciona orientación sobre la responsabilidad social y abarca aspectos relacionados con el compromiso y la comunicación con los grupos de interés."
+  ]
+ },
+ "44": {
+  "kind": "prooftest",
+  "title": "¡Pongámonos a prueba!",
+  "navTitle": null,
+  "bullets": []
+ },
+ "45": {
+  "kind": "casechain",
+  "title": "Caso de estudio",
+  "navTitle": null,
+  "bullets": []
+ },
+ "46": {
+  "kind": "casedetail",
+  "title": "Caso de estudio",
+  "stage": "abastecimiento",
+  "screen": "Abastecimiento",
+  "navTitle": null,
+  "bullets": []
+ },
+ "47": {
+  "kind": "casedetail",
+  "title": "Caso de estudio",
+  "stage": "operacion",
+  "screen": "Operación",
+  "navTitle": null,
+  "bullets": []
+ },
+ "48": {
+  "kind": "bullets",
+  "title": "Caso de estudio",
+  "navTitle": null,
+  "bullets": [
+   "Luego de la producción la compañía cuenta con un proceso para la venta y distribución de los productos donde estos se entregan a los puntos de venta. El transporte se hace mediante una flota a diésel y gasolina que genera emisiones.",
+   "Para impulsar las ventas la compañía tiene una estrategia de marketing para la promoción de productos cumpliendo con la legislación. Sin embargo, hay preocupaciones por las características de nutrición de los productos que distribuyen."
+  ]
+ },
+ "49": {
+  "kind": "bullets",
+  "title": "Caso de estudio",
+  "navTitle": null,
+  "bullets": [
+   "Información general de la organización",
+   "Indicadores de desempeño"
+  ]
+ },
+ "50": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "52": {
+  "kind": "divider",
+  "title": "Paso 2 Identificación de impactos",
+  "variant": "step",
+  "navTitle": null,
+  "bullets": []
+ },
+ "53": {
+  "kind": "bullets",
+  "title": "Comprensión de los impactos reales y potenciales",
+  "navTitle": null,
+  "bullets": []
+ },
+ "54": {
+  "kind": "bullets",
+  "title": "Comprensión de los impactos reales y potenciales Tips de reporte",
+  "navTitle": null,
+  "bullets": [
+   "Tips de reporte",
+   "Recurrir a distintas fuentes",
+   "Considerar los estándares sectoriales",
+   "Evaluar los impactos de forma continua",
+   "Priorizar los impactos negativos",
+   "Los impactos no deberían ser las acciones priorizadas previamente por la organización."
+  ]
+ },
+ "55": {
+  "kind": "bullets",
+  "title": "Participación de los grupos de interés",
+  "navTitle": null,
+  "bullets": [
+   "Para involucrar a los grupos de interés en la identificación de impactos las organizaciones deberían:",
+   "Procurar hacer consultas directas",
+   "Respetar los derechos humanos en el proceso de consultas.",
+   "En algunos casos podría involucrar a representantes de los grupos de interés.",
+   "Priorizar grupos de interés más afectados"
+  ]
+ },
+ "56": {
+  "kind": "bullets",
+  "title": "Identificación de los impactos positivos y negativos",
+  "navTitle": null,
+  "bullets": [
+   "Mapear la cadena de valor",
+   "Reunirse con grupos multidisciplinarios para la identificación de impactos.",
+   "Si es posible realice ejercicios de debida diligencia ambiental y de derechos humanos",
+   "Realice un benchmark de reportes del sector"
+  ]
+ },
+ "57": {
+  "kind": "bullets",
+  "title": "Identificación de los impactos positivos y negativos",
+  "navTitle": null,
+  "bullets": [
+   "¿Cómo se puede involucrar la organización?",
+   "Impactos ocasionados directamente",
+   "Impactos que ayuda a ocasionar",
+   "Impactos a través de relaciones comerciales"
+  ]
+ },
+ "58": {
+  "kind": "bullets",
+  "title": "Agrupación de los impactos en temas",
+  "navTitle": null,
+  "bullets": [
+   "La organización puede agrupar los impactos en temas, de acuerdo con categorías generales por actividad comercial, por grupos de interés, tipo de relación comercial, o por un recurso económico o medioambiental."
+  ]
+ },
+ "59": {
+  "kind": "bullets",
+  "title": "Caso de estudio",
+  "navTitle": null,
+  "bullets": [
+   "Considerando la empresa que estamos analizando en el caso de estudio y las relaciones comerciales y operación descrita. ¿Cuáles serían los principales impactos reales y potenciales positivos y negativos que identifica en la cadena de valor?"
+  ]
+ },
+ "60": {
+  "kind": "bullets",
+  "title": "Impactos positivos, negativos, reales y potenciales",
+  "navTitle": null,
+  "bullets": [
+   "Partiendo del caso de estudio, y el análisis de cada una de las etapas de la cadena de valor, se identifican los siguientes impactos para la etapa de abastecimiento:",
+   "Impactos Impactos positivos Impactos negativos",
+   "Etapa en la cadena de valor Impactos reales Impactos potenciales Impactos reales Impactos potenciales",
+   "Abastecimiento Las empresas influye positivamente en las comunidades locales a través de programas de desarrollo social que permiten la creación de empleo y el desarrollo de infraestructura Las compras realizadas a pueden generar crecimiento económico y desarrollo de las comunidades locales. Cambio Climático: Las emisiones de gases de efecto invernadero de la agricultura, incluyendo el metano y el óxido nitroso, contribuyen al cambio climático. Condiciones Laborales: Los trabajadores agrícolas pueden enfrentar condiciones laborales precarias, bajos salarios y largas jornadas de trabajo.",
+   "En algunos casos en los lugares donde se abastece la organización se han identificado violaciones a los derechos humanos, como el trabajo infantil y el trabajo forzoso.",
+   "Los procesos de cultivo requieren agua en zonas de estrés hídrico alto."
+  ]
+ },
+ "61": {
+  "kind": "bullets",
+  "title": "Impactos positivos, negativos, reales y potenciales",
+  "navTitle": null,
+  "bullets": [
+   "Impactos Impactos positivos Impactos negativos",
+   "Etapa en la cadena de valor Impactos reales Impactos potenciales Impactos reales Impactos potenciales",
+   "Operación La mejora en las condiciones laborales de los empleados mejoran su calidad de vida y satisfacción. La presencia de la empresa puede tener efectos positivos en el desarrollo económico de las zonas de influencia La utilización de calderas o maquinaria relacionada con el procesamiento de alimentos puede generar emisiones de contaminantes al aire, como CO2, metano, y otros compuestos orgánicos volátiles El proceso de manufactura y el empaque pueden generar residuos que, si no se gestionan adecuadamente, contribuyen a la contaminación y afectación de ecosistemas",
+   "Gestión de Residuos: Los desechos generados durante la producción y la pérdida y desperdicio de alimentos contribuyen a la contaminación si no se gestionan adecuadamente. La no identificación temprana de condiciones inseguras",
+   "accidentes puede llegar a incrementar la tasa de accidentalidad y fatalidades en empleados y contratistas",
+   "El proceso de producción tiene consumos de agua en zonas de alto estrés hídrico."
+  ]
+ },
+ "62": {
+  "kind": "bullets",
+  "title": "Impactos positivos, negativos, reales y potenciales",
+  "navTitle": null,
+  "bullets": [
+   "Impactos positivos Impactos negativos",
+   "Etapa en la cadena de valor Impactos reales Impactos potenciales Impactos reales Impactos potenciales",
+   "Distribución La distribución de alimentos envasados crea empleos generando beneficios económicos en el sector logístico, incluyendo transporte, almacenamiento y gestión de la cadena de suministro La capacidad de distribuir eficientemente puede fortalecer las relaciones comerciales con minoristas y otros socios en la cadena de suministro. Emisiones de contaminantes al aire, como CO2, metano, y otros compuestos orgánicos volátiles Etiquetado de productos sin la información necesaria de los ingredientes utilizados y propiedades alimenticias puede ocasionar desinformación al consumidor final.",
+   "La distribución depende en gran medida de vehículos que utilizan combustibles fósiles, lo que impacta en la demanda de estos recursos no renovables .",
+   "Los residuos de los productos vendidos generan contaminación"
+  ]
+ },
+ "63": {
+  "kind": "divider",
+  "title": "Evaluación de impactos",
+  "variant": "step",
+  "navTitle": null,
+  "bullets": []
+ },
+ "64": {
+  "kind": "bullets",
+  "title": "Evaluación de la importancia de los impactos",
+  "navTitle": null,
+  "bullets": [
+   "En este paso, la organización evalúa la importancia de los impactos identificados para priorizarlos:",
+   "Análisis cualitativo y cuantitativo",
+   "Específico a la organización",
+   "Influenciada por los sectores en los que se opera y las relaciones comerciales.",
+   "Consultar a los grupos de interés.",
+   "Impacto sobre la economía, el medio ambiente y las personas."
+  ]
+ },
+ "65": {
+  "kind": "bullets",
+  "title": "¿Cómo evaluar los impactos?",
+  "navTitle": null,
+  "bullets": [
+   "Identificación de los aspectos de evaluación de impactos negativos:",
+   "Gravedad: entendimiento de las características que inciden en la evaluación del impacto negativo, i) escala, ii) alcance y iii) el carácter irremediable.",
+   "Probabilidad: Entendimiento de la posibilidad que el impacto se produzca.",
+   "Identificación de los aspectos de evaluación de impactos positivos",
+   "Escala y alcance: Beneficio del impacto y su extensión sobre individuos o recursos que se ven beneficiados.",
+   "En lo que respecta a impactos negativos potenciales sobre los derechos humanos, la gravedad del impacto prevalece sobre su probabilidad."
+  ]
+ },
+ "66": {
+  "kind": "bullets",
+  "title": "¿Cómo evaluar los impactos?",
+  "navTitle": null,
+  "bullets": [
+   "Impactos positivos",
+   "Generación de energías limpias",
+   "Proporcionar energía limpia y reducir emisiones",
+   "Cantidad de energía generada y cantidad de emisiones reducidas",
+   "Impactos negativos",
+   "Contaminación del agua",
+   "Daños a la salud",
+   "Personas y especies afectadas",
+   "Reversibilidad de los daños"
+  ]
+ },
+ "67": {
+  "kind": "bullets",
+  "title": "Tips para la evaluación de impactos",
+  "navTitle": null,
+  "bullets": [
+   "Tips para la evaluación de impactos:",
+   " Involucrar diferentes áreas.",
+   " Información precisa",
+   " Considerar la cadena de valor",
+   " Agrupar impactos en temas."
+  ]
+ },
+ "68": {
+  "kind": "bullets",
+  "title": "Caso de estudio",
+  "navTitle": null,
+  "bullets": [
+   "Caso de estudio"
+  ]
+ },
+ "69": {
+  "kind": "bullets",
+  "title": "Caso de estudio, evaluando los impactos",
+  "navTitle": null,
+  "bullets": [
+   "Impacto Descripción del impacto",
+   "Cambio climático Contribución significativa a las emisiones de gases de efecto invernadero.",
+   "Gestión de residuos Generación considerable de residuos sólidos y líquidos.",
+   "Uso del agua Consumo intensivo de agua.",
+   "Biodiversidad Pérdida de hábitats naturales.",
+   "Nutrición y salud de los clientes Calidad y seguridad de los alimentos producidos.",
+   "Desarrollo de las comunidades Impacto significativo en el desarrollo económico y social de las comunidades locales.",
+   "Bienestar de los empleados Condiciones laborales y ambiente de trabajo.",
+   "Seguridad y salud en el trabajo Prevención de accidentes laborales y promoción de un entorno de trabajo seguro.",
+   "Gestión de cadena de abastecimiento Prácticas de abastecimiento sostenible y DDHH en la cadena de suministro",
+   "Desempeño económico Rentabilidad y crecimiento financiero."
+  ]
+ },
+ "70": {
+  "kind": "bullets",
+  "title": "Caso de estudio, un ejemplo de esta evaluación",
+  "navTitle": null,
+  "bullets": [
+   "Impacto - Cambio Climático (Emisiones de gases de efecto invernadero)",
+   "Gravedad Alto – En toda la cadena de valor existe una dependencia a los combustibles fósiles lo cual pueden causar un impacto significativo en el cambio climático (emisiones de gases de efecto invernadero).",
+   "Escala: nivel de gravedad del impacto Escala del nivel de gravedad del impacto: Se debe a la gran medida a la contaminación del aire, originada por el uso de combustibles fósiles. Este impacto no solo afecta la calidad ambiental, deteriorando la pureza del aire, sino que también repercute negativamente en la comunidad.",
+   "Alcance: extensión del impacto Muy Alto: Puede llegar a impactar la calidad de vida de poblaciones aledañas debido al uso de combustibles fósiles que generan las emisiones de Gases de Efecto Invernadero afectando la calidad del aire y salud de la comunidad.",
+   "Irremediable: el grado de dificultad que supone contrarrestar o corregir el daño resultante Grado medio de remediación – Debido a que la remediación de los impactos en relación con el cambio climático supone un esfuerzo de recursos humanos, técnicos y tecnológicos como financieros para contrarrestar las emisiones de gases de efectos invernadero.",
+   "Probabilidad Muy alta – ya que las emisiones de gases de efecto invernadero inciden en factores ambientales y sociales. Sin un control efectivo en origen, estos impactos se harán evidentes."
+  ]
+ },
+ "71": {
+  "kind": "bullets",
+  "title": "Caso de estudio, un ejemplo de esta evaluación",
+  "navTitle": null,
+  "bullets": [
+   "Impacto - Seguridad y Salud en el Trabajo",
+   "Gravedad Medio – Las actividades de la empresa en abastecimiento, producción y distribución involucran el manejo de maquinaria, el uso de vehículos y el contacto con sustancias químicas. Estas operaciones, si no se gestionan con seguridad, pueden resultar en accidentes de trabajo, así como en enfermedades laborales",
+   "Escala: nivel de gravedad del impacto La exposición constante de los trabajadores que se encuentran en la tanto en la etapa de abastecimiento (exposición a fertilizantes) como a los trabajadores en la etapa de producción (exposición a maquinaria y equipos), incluyendo a los trabajadores en la etapa de distribución (exposición a carga pesada y accidentes de tránsito).",
+   "Alcance: extensión del impacto Alto: El uso de fertilizantes nitrogenados puede exponer a los trabajadores a tóxicos, causando problemas respiratorios y dermatológicos, o incluso intoxicaciones. En la operación, el manejo de maquinaria pesada conlleva riesgos de atrapamientos y lesiones como contusiones y fracturas. Finalmente, en la distribución, manipular cargas pesadas puede provocar lesiones osteomusculares y contusiones.",
+   "Irremediable: el grado de dificultad que supone contrarrestar o corregir el daño resultante Grado medio de remediación – La remediación de los impactos se considera medio ya que, dependiendo de la naturaleza del accidente de trabajo o enfermedad laboral, mediante acciones administrativas, preventivas, mitigantes y correctivas se encamina a contrarrestar el impacto de la ocurrencia de accidentes de trabajo y enfermedades laborales.",
+   "Probabilidad Media– Debido a la naturaleza de las actividades industriales que se realizan en las tres etapas de la cadena de valor, se identifica que es probable que se materialicen accidentes de trabajo por su exposición a los factores de riesgos descritos."
+  ]
+ },
+ "72": {
+  "kind": "bullets",
+  "title": "Caso de estudio, un ejemplo de esta evaluación",
+  "navTitle": null,
+  "bullets": [
+   "Impacto – Desarrollo de las comunidades locales",
+   "Escala Impacto significativo en el desarrollo económico y social de las comunidades locales mediante el desarrollo de programas de relacionamiento con la comunidad aledaña a las plantas de producción",
+   "Alcance Baja: Beneficia positivamente contribuyendo al desarrollo sostenible y se potencia el crecimiento económico desde la comunidad, lo cual es esencial para la resiliencia y prosperidad a largo plazo de la comunidad. En el último año los beneficiarios y la inversión crecieron entre 5% - 10% , pero solamente representa el 2% del valor distribuido en el año en curso",
+   "Si bien los programas impactan favorablemente en las comunidades cercanas, generando beneficios económicos y sociales en la región. No son significativas para la compañía.",
+   "Probabilidad Medio– Los programas de desarrollo social generan impactos positivos en la comunidad y permiten el desarrollo de capacidades."
+  ]
+ },
+ "73": {
+  "kind": "prooftest",
+  "title": "¡Pongámonos a prueba!",
+  "navTitle": null,
+  "bullets": []
+ },
+ "74": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "76": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "78": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "80": {
+  "kind": "divider",
+  "title": "Paso 4: Priorización de temas",
+  "variant": "step",
+  "navTitle": null,
+  "bullets": []
+ },
+ "81": {
+  "kind": "bullets",
+  "title": "¿Cómo priorizar los temas materiales?",
+  "navTitle": null,
+  "bullets": [
+   "1. Establecer un umbral para determinar los temas que son materiales",
+   "2. Análisis de los temas materiales",
+   "3. Evaluar la importancia de los impactos",
+   "4. Determinar la información a presentar para cada tema material"
+  ]
+ },
+ "82": {
+  "kind": "bullets",
+  "title": "Tips para priorizar impactos",
+  "navTitle": null,
+  "bullets": [
+   "¿Cómo priorizar los temas materiales?",
+   "Dar una valoración numérica a los análisis cualitativos.",
+   "Promediar las calificaciones",
+   "Establecer un umbral cuantitativo"
+  ]
+ },
+ "83": {
+  "kind": "prooftest",
+  "title": "¡Pongámonos a prueba!",
+  "navTitle": null,
+  "bullets": []
+ },
+ "84": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "86": {
+  "kind": "learned",
+  "title": "¿Qué hemos aprendido?",
+  "items": [
+   "El proceso para determinar la materialidad tiene varios pasos que se deben seguir y documentar para reportar de conformidad con el estándar.",
+   "Entender el contexto de la organización",
+   "Identificar impactos reales y potenciales",
+   "Evaluar la importancia de los impactos",
+   "Priorizar los impactos más significativos sobre los que presentar información.",
+   "Reporte."
+  ],
+  "navTitle": null,
+  "bullets": [
+   "El proceso para determinar la materialidad tiene varios pasos que se deben seguir y documentar para reportar de conformidad con el estándar.",
+   "Entender el contexto de la organización",
+   "Identificar impactos reales y potenciales",
+   "Evaluar la importancia de los impactos",
+   "Priorizar los impactos más significativos sobre los que presentar información.",
+   "Reporte."
+  ]
+ },
+ "87": {
+  "kind": "divider",
+  "title": "Módulo 4: Determinación de información a reportar",
+  "variant": "module",
+  "navTitle": null,
+  "bullets": []
+ },
+ "88": {
+  "kind": "toc",
+  "title": "Determinación de información a reportar",
+  "items": [
+   "Relacionar los contenidos GRI con los temas materiales.",
+   "GRI 3 – Temas materiales"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "Relacionar los contenidos GRI con los temas materiales.",
+   "GRI 3 – Temas materiales"
+  ]
+ },
+ "89": {
+  "kind": "bullets",
+  "title": "¿Cómo identificar los contenidos para un tema material?",
+  "navTitle": null,
+  "bullets": [
+   "Incluir contenidos pertinentes relacionados a sus impactos",
+   "No hay límites de contenidos a reportar",
+   "Un tema material puede requerir de varios estándares temáticos",
+   "Utilizar estándares sectoriales",
+   "Pueden usarse otros estándares"
+  ]
+ },
+ "90": {
+  "kind": "bullets",
+  "title": "Algunas recomendaciones para identificar la información a reportar",
+  "navTitle": null,
+  "bullets": [
+   "Algunas recomendaciones para identificar la información a reportar:",
+   "Identificar Estándares relevantes",
+   "Relacionar los temas relevantes con los contenidos",
+   "Considerar los insumos de los diálogos con grupos de interés.",
+   "Integrar los contenidos en la estructura de reporte",
+   "Monitoreo y actualización continua"
+  ]
+ },
+ "91": {
+  "kind": "bullets",
+  "title": "Contenidos sobre los temas materiales",
+  "navTitle": null,
+  "bullets": [
+   "Contenido 3-1 Proceso de determinación de todos los temas materiales",
+   "La organización debe",
+   "Requerimientos",
+   "a. describir el proceso que ha seguido para determinar sus temas materiales, incluyendo",
+   "cómo ha identificado sus impactos reales y potenciales, negativos y positivos, sobre la economía, el medio ambiente y las personas, incluidos los impactos sobre los derechos humanos, en todas sus actividades y relaciones comerciales.",
+   "cómo ha priorizado los impactos sobre los que informar en función de su importancia",
+   "b. especificar los grupos de interés y expertos cuyos puntos de vista han participado en el proceso de determinación de sus temas materiales.",
+   "Contenido 3-2 Lista de temas materiales",
+   "a. enumerar sus temas materiales",
+   "b. Informar de los cambios que se hayan producido en la lista de temas materiales",
+   "con respecto al periodo objeto del informe anterior."
+  ]
+ },
+ "92": {
+  "kind": "bullets",
+  "title": "Contenidos sobre los temas materiales",
+  "navTitle": null,
+  "bullets": [
+   "Contenido 3-3 Gestión de los temas materiales",
+   "Para cada material del que se presente información en el Contenido 3-3, la organización debe",
+   "a. describir los impactos reales y potenciales, negativos y positivos, sobre la economía, el",
+   "medio ambiente y las personas, incluidos los impactos sobre los derechos humanos.",
+   "b. indicar si la organización está relacionada con un impacto negativo mediante sus actividades",
+   "o como resultado de sus relaciones comerciales y describir las actividades o relaciones",
+   "comerciales.",
+   "c. describir sus políticas o compromisos en relación con el tema material.",
+   "Las medidas adoptadas para prevenir o mitigar impactos negativos potenciales",
+   "Las medidas adoptadas para abordar los impactos negativos potenciales, incluidas las medidas",
+   "para facilitar o colaborar en su remediación",
+   "Las medidas adoptadas para gestionar los impactos negativos reales y potenciales",
+   "e. presentar la siguiente información sobre el seguimiento de la eficacia de las medidas",
+   "procesos usados para hacer un seguimiento de la eficacia de las medidas ¿",
+   "metas, objetivos e indicadores usados para evaluar el progreso;",
+   "la eficacia de las medidas, incluido el avance hacia la consecución de las metas y los objetivos;",
+   "lecciones aprendidas y cómo se han incorporado a las políticas y los procedimientos operativos",
+   "de la organización;",
+   "f. Describir cómo la participación de los grupos de interés ha influido en las medidas",
+   "adoptadas (3-3-d) y cómo ha informado si estas han sido efectivas (3-3-e)"
+  ]
+ },
+ "93": {
+  "kind": "prooftest",
+  "title": "¡Pongámonos a prueba!",
+  "navTitle": null,
+  "bullets": []
+ },
+ "94": {
+  "kind": "quiz",
+  "navTitle": null,
+  "bullets": []
+ },
+ "96": {
+  "kind": "learned",
+  "title": "¿Qué hemos aprendido?",
+  "items": [
+   "El proceso para relacionar los contenidos GRI con los temas materiales.",
+   "Los contenidos a reportar sobre el proceso de materialidad y su gestión relacionados en el GRI – 3"
+  ],
+  "navTitle": null,
+  "bullets": [
+   "El proceso para relacionar los contenidos GRI con los temas materiales.",
+   "Los contenidos a reportar sobre el proceso de materialidad y su gestión relacionados en el GRI – 3"
+  ]
+ },
+ "97": {
+  "kind": "bullets",
+  "title": "Resumen",
+  "navTitle": null,
+  "bullets": [
+   "Contexto del análisis de materialidad",
+   "Proceso para la definición de la materialidad",
+   "Determinación de información a repotar"
+  ]
+ },
+ "98": {
+  "kind": "closing",
+  "navTitle": null,
+  "bullets": []
+ }
+}
