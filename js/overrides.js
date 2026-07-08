@@ -1,5 +1,6 @@
 /* ============================================================
-   Tutorías GRI — Arquetipos bespoke + overrides por diapositiva
+   Tutorías GRI — Comunicación efectiva · Vistas a medida
+   Introducción (diapositivas 1–10)
    ============================================================ */
 (function () {
   'use strict';
@@ -7,13 +8,38 @@
   const V = window.__V;
   const SVG = A.SVG, IMG = A.IMG, esc = A.esc, gri = A.gri;
 
-  // ---- sistema de estándares (slide 7) ----
+  // ---- PORTADA (slide 1) — usa la portada oficial image1.jpg ----
+  V.covIntro = function (s, d) {
+    return '<div style="position:absolute;inset:0;background:#1f4e96">' +
+      '<img src="' + IMG + 'image1.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" alt="">' +
+      '<div style="position:absolute;left:59%;right:4.5%;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;color:#fff;text-shadow:0 1px 10px rgba(11,21,38,.35)" data-step="always">' +
+      '<div style="font-size:15px;letter-spacing:2.5px;text-transform:uppercase;color:#C3D6F0;font-weight:bold;margin-bottom:16px">Tutoría GRI · MiPymes</div>' +
+      '<h1 style="font-size:31px;line-height:1.22;font-weight:bold;margin-bottom:18px">Comunicación efectiva en los reportes de sostenibilidad</h1>' +
+      '<div style="width:54px;height:4px;background:var(--orange-strong);margin-bottom:18px;border-radius:2px"></div>' +
+      '<div style="font-size:19px;color:#DCE7F7">Introducción a la tutoría</div>' +
+      '</div></div>';
+  };
+
+  // ---- ¿Qué es el GRI? (slide 2) — panel + bullets ----
+  V.griwhat = function (s, d) {
+    const items = [
+      'Organización internacional independiente que ayuda a las organizaciones a asumir la responsabilidad de sus impactos en cuestiones de sostenibilidad.',
+      'Aborda temas como el cambio climático, los derechos humanos, la gobernanza y el bienestar social.',
+      'Empodera la toma de decisiones para generar beneficios sociales, ambientales y económicos, con un lenguaje global para divulgar impactos.',
+    ];
+    const rows = items.map((t, i) => '<div class="vitem" data-step="' + i + '"><div class="bd-ic">' + SVG.check + '</div><div>' + esc(t) + '</div></div>').join('');
+    return gri(false) +
+      '<div class="sl-panel" style="width:322px"><div class="pt" style="font-size:25px">¿Qué es el Global Reporting Initiative?<br><span style="font-size:19px;color:#C3D6F0">GRI</span></div></div>' +
+      '<div class="sl-body" style="left:352px;right:322px;top:0;bottom:0"><div class="vlist">' + rows + '</div></div>' +
+      '<img src="' + IMG + 'image53.jpg" data-step="always" style="position:absolute;right:0;top:0;bottom:0;width:300px;height:100%;object-fit:cover" alt="">';
+  };
+
+  // ---- Sistema de los Estándares GRI (slide 3) — reconstrucción animada del diagrama ----
   V.stdsystem = function (s, d) {
-    const book = (cls, code) => '<div class="std-book"><div class="bk">' + code + '</div>';
     const uni = [
-      ['GRI 1', 'Fundamentos — requerimientos y principios para el uso de los Estándares'],
-      ['GRI 2', 'Contenidos Generales — información sobre la organización informante'],
-      ['GRI 3', 'Temas Materiales — cómo determinar y gestionar los temas materiales'],
+      ['GRI 1', 'Requerimientos y principios para el uso de los Estándares GRI'],
+      ['GRI 2', 'Contenidos sobre la organización informante'],
+      ['GRI 3', 'Contenidos y orientaciones sobre los temas materiales'],
     ];
     const uniRows = uni.map(u => '<div class="std-book"><div class="bk">' + u[0] + '</div><div>' + esc(u[1]) + '</div></div>').join('');
     const grid = (codes) => '<div class="std-grid">' + codes.map(c => '<div class="bk">' + c + '</div>').join('') + '</div>';
@@ -28,345 +54,108 @@
       '</div></div>';
   };
 
-  // ---- conceptos clave 2x2 (slides 8-11) ----
-  V.concept = function (s, d) {
-    const items = [
-      { t: 'Impacto', ic: SVG.globe },
-      { t: 'Debida Diligencia', ic: SVG.dd },
-      { t: 'Temas materiales', ic: SVG.topic },
-      { t: 'Grupos de interés', ic: SVG.people },
-    ];
-    const active = d.active != null ? d.active : 0;
-    const cards = items.map((it, i) =>
-      '<div class="concept-card' + (i === active ? ' active' : '') + '" data-step="always">' + it.ic + '<span>' + it.t + '</span></div>'
-    ).join('');
-    const bullets = (d.bullets || []).map((t, i) => '<div class="vitem" data-step="' + i + '"><div class="bd-ic">' + SVG.check + '</div><div>' + A.fmtBullet(t) + '</div></div>').join('');
-    return gri(false) +
-      '<div class="sl-panel" style="width:340px"><div class="pt">' + esc(items[active].t) + '</div></div>' +
-      '<div class="concept-grid" style="left:390px;right:56px;top:70px;bottom:70px;position:absolute">' + cards + '</div>' +
-      (bullets ? '<div class="sl-body" style="left:390px;right:56px;top:auto;bottom:24px;height:auto"><div class="vlist" style="height:auto">' + bullets + '</div></div>' : '');
-  };
-  // conceptos con narración larga: mostrar definición como callout bajo las tarjetas
-  V.conceptDef = function (s, d) {
-    const items = ['Impacto', 'Debida Diligencia', 'Temas materiales', 'Grupos de interés'];
-    const icons = [SVG.globe, SVG.dd, SVG.topic, SVG.people];
-    const active = d.active || 0;
-    const cards = items.map((t, i) =>
-      '<div class="concept-card' + (i === active ? ' active' : '') + '" data-step="always" style="font-size:15px;gap:8px">' +
-      '<div style="width:38px;height:38px">' + icons[i] + '</div><span>' + t + '</span></div>'
-    ).join('');
-    return gri(false) +
-      '<div class="sl-title">Conceptos clave</div>' +
-      '<div style="position:absolute;left:112px;top:120px;width:300px;display:grid;grid-template-columns:1fr 1fr;gap:14px">' + cards + '</div>' +
-      '<div class="sl-body" style="left:452px;right:56px;top:120px"><div class="callout" data-step="always" style="font-size:15.5px;max-height:440px;overflow-y:auto">' +
-      '<b style="color:var(--blue);font-size:18px;display:block;margin-bottom:8px">' + esc(items[active]) + '</b>' + esc(d.def || '') + '</div></div>';
-  };
-
-  // ---- lista de conformidad 1-9 (slides 12-16) ----
-  V.conform = function (s, d) {
+  // ---- GRI 1: Requerimientos "De conformidad" (slide 4) — 9 requisitos ----
+  V.req9 = function (s, d) {
     const reqs = [
-      'Aplicar los principios para la elaboración de informes',
-      'Presentar los contenidos correspondientes a GRI 2',
-      'Determinar los temas materiales',
-      'Presentar los contenidos correspondientes a GRI 3',
-      'Presentar contenidos de los Estándares Temáticos GRI para cada tema material',
-      'Proporcionar los motivos para la omisión relativos al contenido o requisito que no pueda cumplir',
-      'Publicar un índice de contenidos GRI',
-      'Proporcionar una declaración de uso',
-      'Notificar a GRI',
+      'Aplicar los principios para la elaboración de informes.',
+      'Presentar los contenidos correspondientes a GRI 2: Contenidos Generales.',
+      'Determinar los temas materiales.',
+      'Presentar los contenidos correspondientes a GRI 3: Temas Materiales.',
+      'Presentar contenidos de los Estándares Temáticos GRI para cada tema material.',
+      'Proporcionar los motivos para la omisión relativos al contenido o requisito que no se pueda cumplir.',
+      'Publicar un índice de contenidos GRI.',
+      'Proporcionar una declaración de uso.',
+      'Notificar a GRI.',
     ];
-    const upto = d.active || 1;
-    const rows = reqs.map((r, i) => {
-      const on = (i + 1) <= upto;
-      const hl = (i + 1) === upto;
-      return '<div class="row ' + (on ? (hl ? 'hl' : '') : 'muted') + '"><div class="no">' + (i + 1) + '</div><div>' + esc(r) + '</div></div>';
-    }).join('');
+    const rows = reqs.map((r, i) =>
+      '<div data-step="' + i + '" style="display:flex;align-items:center;gap:14px;background:var(--gray-card);border-radius:8px;padding:8px 14px">' +
+      '<span style="flex:0 0 32px;width:32px;height:32px;border-radius:8px;background:var(--blue);color:#fff;font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center">' + (i + 1) + '</span>' +
+      '<span style="font-size:13.5px;color:#2A3240">' + esc(r) + '</span></div>').join('');
     return gri(false) +
-      '<div class="sl-title sm" style="right:150px">¿Cómo se reporta usando los Estándares GRI?</div>' +
-      '<div class="sl-sub" style="top:78px;font-size:16px">Opciones para la preparación del informe</div>' +
-      '<div class="conform" style="top:120px;bottom:36px"><div class="rail left">De conformidad</div>' +
-      '<div class="items">' + rows + '</div>' +
-      '<div class="rail right">En Referencia</div></div>';
+      '<div class="sl-title" style="font-size:30px">GRI 1: Fundamentos 2021 · Requerimientos</div>' +
+      '<div class="sl-sub" data-step="always" style="top:92px"><b>Informe de conformidad</b> con los Estándares GRI</div>' +
+      '<div style="position:absolute;left:112px;right:64px;top:138px;bottom:28px;display:flex;flex-direction:column;gap:7px;justify-content:center">' + rows + '</div>';
   };
 
-  // ---- omisiones (slide 18) ----
+  // ---- Motivos de omisión (slide 6) — 4 tarjetas ----
   V.omissions = function (s, d) {
     const cards = [
-      ['01', 'No procede', 'Explique por qué se considera que el contenido o el requerimiento no procede.'],
-      ['02', 'Prohibiciones legales', 'Describa las prohibiciones legales específicas.'],
-      ['03', 'Restricciones de confidencialidad', 'Indique los problemas específicos de confidencialidad.'],
-      ['04', 'Información no disponible o incompleta', 'Especifique la información que falta, por qué y los pasos para obtenerla.'],
+      ['01', 'No procede', 'Por las características de la organización o sus impactos, el requerimiento no aplica a su contexto.'],
+      ['02', 'Prohibiciones legales', 'La ley prohíbe recoger la información solicitada o hacerla pública.'],
+      ['03', 'Restricciones de confidencialidad', 'La organización considera que la información es confidencial y no puede publicarla.'],
+      ['04', 'Información no disponible o incompleta', 'Se dispone del contenido, pero la información no está disponible o está en construcción.'],
     ];
     const grid = cards.map((c, i) =>
       '<div class="gcard" data-step="' + i + '"><b style="display:flex;align-items:center;gap:10px"><span style="background:var(--orange-strong);color:#fff;border-radius:6px;padding:2px 9px;font-size:15px">' + c[0] + '</span>' + esc(c[1]) + '</b>' + esc(c[2]) + '</div>'
     ).join('');
     return gri(false) +
-      '<div class="sl-title">Uso de las omisiones</div>' +
-      '<div class="sl-body"><div class="grid2">' + grid + '</div></div>';
+      '<div class="sl-title">Motivos de omisión</div>' +
+      '<div class="sl-sub" data-step="always" style="top:92px">Cuando no se puede cumplir un contenido o requisito, se declara uno de estos cuatro motivos:</div>' +
+      '<div class="sl-body" style="top:140px"><div class="grid2">' + grid + '</div></div>';
   };
 
-  // ---- timeline de proceso (slide 24) ----
-  V.timeline4 = function (s, d) {
-    const cells = [
-      { pos: 'top', ic: '', b: 'Entender el contexto de la organización', t: 'Usar los Estándares Sectoriales para entender el contexto de los sectores', color: 'var(--blue)' },
-      { pos: 'bot', ic: SVG.people, b: 'Identificar impactos reales y potenciales', t: 'Considerar los temas descritos en los Estándares Sectoriales', color: 'var(--teal)' },
-      { pos: 'top', ic: SVG.people, b: 'Evaluar la importancia de los impactos', t: 'Contar con la participación de grupos de interés y expertos', color: 'var(--orange-strong)' },
-      { pos: 'bot', ic: SVG.target, b: 'Priorizar los impactos más significativos', t: 'Seleccionar los impactos prioritarios para determinar los temas materiales sobre los que informar', color: 'var(--purple)' },
+  // ---- Objetivo general (slide 7) ----
+  V.objGeneral = function (s, d) {
+    return gri(false) +
+      '<div class="sl-panel"><div class="pt">Objetivos<br>de la tutoría</div></div>' +
+      '<div class="sl-body" style="left:440px;right:56px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center">' +
+      '<div class="tag-step" data-step="always">Objetivo general</div>' +
+      '<div class="callout" data-step="0" style="font-size:16.5px;line-height:1.65">Desarrollar <b>habilidades efectivas</b> en las personas encargadas de elaborar informes de sostenibilidad en las <b>MiPymes</b>, ayudando a quienes no necesariamente son profesionales de la sostenibilidad o de la comunicación y que pueden carecer de las herramientas óptimas para transmitir mensajes de manera efectiva al redactar el informe.</div>' +
+      '</div>';
+  };
+
+  // ---- Objetivos de aprendizaje (slide 8) — 7 numerados compactos ----
+  V.learnobjectives = function (s, d) {
+    const items = [
+      'Comprender metodologías, formatos y estilos para la redacción de informes.',
+      'Explorar diversas técnicas y estilos de redacción adaptados a estos informes.',
+      'Conocer y aplicar estrategias de organización y jerarquización de la información.',
+      'Reforzar conocimientos fundamentales de gramática y redacción.',
+      'Entender y aplicar los Estándares GRI y sus principios.',
+      'Aplicar técnicas de visualización de datos.',
+      'Explorar el uso de la inteligencia artificial como potencializador del trabajo humano.',
     ];
-    const lefts = ['0%', '25%', '50%', '75%'];
-    const html = cells.map((c, i) =>
-      '<div class="cell ' + c.pos + '" data-step="' + i + '" style="left:' + lefts[i] + '"><b>' + esc(c.b) + '</b>' +
-      (c.ic ? '<div class="ic" style="fill:' + c.color + '">' + c.ic + '</div>' : '<div class="ic" style="height:74px"></div>') +
-      '<div style="color:#3a4557;font-size:13px">' + esc(c.t) + '</div></div>'
-    ).join('');
+    const rows = items.map((t, i) =>
+      '<div data-step="' + i + '" style="display:flex;align-items:center;position:relative">' +
+      '<div style="flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;font-size:16px;font-weight:bold;display:flex;align-items:center;justify-content:center;z-index:2">' + (i + 1) + '</div>' +
+      '<div style="background:var(--gray-card);padding:10px 18px 10px 32px;margin-left:-20px;font-size:13.5px;flex:1;color:#242A33">' + esc(t) + '</div></div>').join('');
     return gri(false) +
-      '<div class="sl-title">Proceso para la determinación de los temas materiales</div>' +
-      '<div class="tl4"><div class="bar" data-step="always"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i></div>' + html + '</div>';
+      '<div class="sl-panel" style="width:352px"><div class="pt" style="font-size:29px">Objetivos<br>de aprendizaje</div></div>' +
+      '<div style="position:absolute;left:398px;right:48px;top:36px;bottom:28px;display:flex;flex-direction:column;gap:8px;justify-content:center">' + rows + '</div>';
   };
 
-  // ---- caso: cadena de valor (slide 45) — ilustración del PPT ----
-  V.casechain = function (s, d) {
-    return caseTag('Caso de estudio') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:150px;bottom:120px;display:flex;align-items:center;justify-content:center" data-step="0">' +
-      '<img src="' + IMG + 'cadena-valor.png" alt="Cadena de valor: abastecimiento, operación, distribución y venta" style="max-width:100%;max-height:100%;object-fit:contain">' +
-      '</div>' + anexoCTA();
-  };
-
-  // ---- caso: detalle de etapa (slides 46,47) — ilustración PPT + texto ----
-  V.casedetail = function (s, d) {
-    const label = { abastecimiento: 'Abastecimiento', operacion: 'Operación' }[d.stage] || 'Caso de estudio';
-    return caseTag('Caso de estudio') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:110px;bottom:64px;display:flex;flex-direction:column;gap:14px">' +
-      '<div data-step="always" style="flex:0 0 190px;display:flex;align-items:center;justify-content:center">' +
-      '<img src="' + IMG + 'cadena-valor.png" alt="Cadena de valor" style="max-width:78%;max-height:100%;object-fit:contain"></div>' +
-      '<div style="display:flex;gap:16px;align-items:flex-start;flex:1;min-height:0">' +
-      '<div style="flex:0 0 210px;font-size:23px;font-weight:bold;color:var(--blue)" data-step="always">' + esc(label) + '</div>' +
-      '<div class="callout" data-step="always" style="flex:1;line-height:1.5;overflow-y:auto;max-height:100%">' + esc(caseText(d.stage)) + '</div>' +
-      '</div></div>' + anexoCTA();
-  };
-  function caseText(stage) {
-    if (stage === 'abastecimiento') return 'En la etapa de abastecimiento, la compañía enfrenta desafíos relacionados con el impacto ambiental de sus prácticas. Depende de una red diversa de proveedores en distintas regiones del país y del extranjero, lo que genera preocupaciones sobre la sostenibilidad de la producción de materias primas, el uso de agua y tierra, y el uso de agroquímicos. No son claras las condiciones laborales de los proveedores ni el cumplimiento normativo, generando inquietudes sobre derechos humanos. La organización inició un plan para evaluar a sus proveedores y sus prácticas ASG.';
-    if (stage === 'operacion') return 'La compañía estableció un sistema de gestión ambiental que reduce el consumo de agua y energía y la generación de residuos, con controles de calidad e inocuidad alimentaria. Persisten presiones por el desperdicio de alimentos, las condiciones laborales y los efectos en comunidades locales por ruido y contaminación de fuentes hídricas. La empresa implementó planes de desarrollo comunitario y un proyecto con la academia para reformular sus productos hacia opciones más saludables.';
-    return '';
-  }
-
-  // ---- caso: información general + indicadores (slide 49) ----
-  V.caseinfo = function (s, d) {
-    const info = [
-      ['Ubicación', 'Colombia', 'Opera solo en su país, sin filiales en el exterior.'],
-      ['Tamaño de operaciones', '3 plantas de producción', 'Este año inauguró una planta de productos bajos en azúcar.'],
-      ['Cadena de abastecimiento', 'Proveedores en +10 países', 'Sin procesos de debida diligencia en sus proveedores.'],
-      ['Distribución', 'Nivel nacional', 'Explora expandirse a otros países.'],
-      ['Empleados', '3.000 empleados', 'Crecimiento del 17 % frente al último año.'],
-      ['Participación de mercado', '10 %', 'Sin variaciones significativas en los últimos años.'],
+  // ---- Contenidos de la tutoría (slide 9) — 6 módulos ----
+  V.contents6 = function (s, d) {
+    const mods = [
+      ['Módulo 1', 'Tipos de texto · Proceso de escritura · Estructura del texto · Estilo y tono'],
+      ['Módulo 2', 'Organización y jerarquización de la información'],
+      ['Módulo 3', 'Principios de redacción · Conexión de ideas · Estilo y presentación'],
+      ['Módulo 4', 'Estructura del informe · Principios de elaboración · Proceso de construcción (GRI)'],
+      ['Módulo 5', 'Guía: visualización de datos'],
+      ['Módulo 6', 'Guía: inteligencia artificial'],
     ];
-    const rows = info.map((r, i) => '<tr data-step="' + i + '"><td class="lead">' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>').join('');
-    const indicadores = [
-      'Emisiones alcance 1 y 2', 'Tasa de reciclaje', 'Consumo de agua', 'Impacto en la biodiversidad',
-      'Nutrición y etiquetado', 'Relacionamiento con la comunidad', 'Satisfacción de empleados',
-      'Tasa de accidentalidad', 'Compras a proveedores locales', 'Evaluación de proveedores', 'Valor económico distribuido',
-    ];
-    const indList = indicadores.map((t, i) => '<div class="vitem" data-step="' + i + '" style="font-size:12.5px;gap:9px"><div class="bd-ic" style="width:24px;height:24px;flex:0 0 24px;font-size:11px">' + (i + 1) + '</div><div>' + esc(t) + '</div></div>').join('');
-    return caseTag('Caso de estudio') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:118px;bottom:40px;display:flex;gap:26px">' +
-      '<div style="flex:1.15;min-width:0"><div style="font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:9px" data-step="always">Información general de la organización</div>' +
-      '<table class="tbl compact"><thead><tr><th>Característica</th><th>Información</th><th>Otros datos</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      '<div style="flex:0.85;min-width:0"><div style="font-size:15px;font-weight:bold;color:var(--blue);margin-bottom:9px" data-step="always">Indicadores de desempeño</div>' +
-      '<div class="vlist" style="height:auto;gap:6px">' + indList + '</div></div>' +
-      '</div>' + anexoCTA();
-  };
-
-  // ---- caso: tabla de impactos por etapa (slides 60-62) ----
-  V.impacttable = function (s, d) {
-    const rows = (d.rows || []).map((r, i) =>
-      '<tr data-step="' + i + '"><td>' + (r[0] ? '<span class="pos">' + esc(r[0]) + '</span>' : '') + '</td><td>' + (r[1] ? '<span class="pos">' + esc(r[1]) + '</span>' : '') + '</td><td>' + (r[2] ? '<span class="neg">' + esc(r[2]) + '</span>' : '') + '</td><td>' + (r[3] ? '<span class="neg">' + esc(r[3]) + '</span>' : '') + '</td></tr>'
-    ).join('');
-    return caseTag('Impactos: ' + esc(d.stage)) + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:110px;bottom:40px">' +
-      '<table class="tbl compact"><thead>' +
-      '<tr><th colspan="2" style="background:#2E9E5B">Impactos positivos</th><th colspan="2" style="background:#C0392B">Impactos negativos</th></tr>' +
-      '<tr><th>Reales</th><th>Potenciales</th><th>Reales</th><th>Potenciales</th></tr>' +
-      '</thead><tbody>' + rows + '</tbody></table></div>';
-  };
-
-  // ---- caso: tabla de temas para evaluar (slide 69) ----
-  V.evaltable = function (s, d) {
-    const themes = [
-      ['Cambio climático', 'Contribución significativa a las emisiones de GEI.'],
-      ['Gestión de residuos', 'Generación considerable de residuos sólidos y líquidos.'],
-      ['Uso del agua', 'Consumo intensivo de agua.'],
-      ['Biodiversidad', 'Pérdida de hábitats naturales.'],
-      ['Nutrición y salud de los clientes', 'Calidad y seguridad de los alimentos producidos.'],
-      ['Desarrollo de las comunidades', 'Impacto en el desarrollo económico y social local.'],
-      ['Bienestar de los empleados', 'Condiciones laborales y ambiente de trabajo.'],
-      ['Seguridad y salud en el trabajo', 'Prevención de accidentes laborales.'],
-      ['Gestión de cadena de abastecimiento', 'Abastecimiento sostenible y DDHH en la cadena.'],
-      ['Desempeño económico', 'Rentabilidad y crecimiento financiero.'],
-    ];
-    const rows = themes.map((t, i) => '<tr data-step="' + i + '"><td class="lead">' + esc(t[0]) + '</td><td>' + esc(t[1]) + '</td></tr>').join('');
-    return caseTag('Caso de estudio: temas a evaluar') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:118px;bottom:36px">' +
-      '<table class="tbl compact"><thead><tr><th style="width:38%">Tema</th><th>Descripción del impacto</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
-  };
-
-  // ---- caso: ficha de evaluación de un impacto (slides 70-72) ----
-  V.evalcard = function (s, d) {
-    const rowsData = d.rows || [];
-    const rows = rowsData.map((r, i) =>
-      '<tr data-step="' + i + '"><td class="lead" style="width:26%">' + esc(r[0]) + '</td><td><b style="color:var(--blue)">' + esc(r[1]) + '</b> ' + esc(r[2] || '') + '</td></tr>'
-    ).join('');
-    return caseTag('Ejemplo de evaluación') + gri(false) +
-      '<div style="position:absolute;left:112px;right:64px;top:110px;bottom:40px">' +
-      '<div class="tag-step" data-step="always" style="background:' + (d.color || 'var(--blue)') + '">' + esc(d.impact) + '</div>' +
-      '<table class="tbl compact"><tbody>' + rows + '</tbody></table></div>';
-  };
-
-  // ---- desarrollo sostenible (slide 22) ----
-  V.sostenible = function (s, d) {
+    const cards = mods.map((m, i) =>
+      '<div data-step="' + i + '" style="background:var(--gray-card);border-left:5px solid var(--blue);border-radius:8px;padding:11px 15px;display:flex;flex-direction:column;justify-content:center">' +
+      '<div style="font-size:15px;font-weight:bold;color:var(--blue-deep);margin-bottom:5px">' + m[0] + '</div>' +
+      '<div style="font-size:12px;color:#3d4655;line-height:1.5">' + esc(m[1]) + '</div></div>').join('');
     return gri(false) +
-      '<div class="sl-title">Desarrollo sostenible</div>' +
-      '<div class="sl-body"><div class="cols2">' +
-      '<div data-step="0"><div style="font-size:19px;color:#2A3240;margin-bottom:22px">¿De dónde nace el concepto de desarrollo sostenible?</div>' +
-      '<div class="quote">“Satisfacer las necesidades del presente sin comprometer la habilidad de las futuras generaciones de satisfacer sus necesidades propias.”</div>' +
-      '<div style="margin-top:14px;color:#5B6675;font-size:14px">— Comisión Brundtland, Naciones Unidas, 1987</div></div>' +
-      '<div class="imgbox" data-step="1"><img src="' + IMG + 'sostenible.jpg" style="border-radius:14px;max-height:440px" alt="Carretera con paneles solares y aerogenerador en un bosque"></div>' +
-      '</div></div>';
+      '<div class="sl-title">Contenidos de la tutoría</div>' +
+      '<div style="position:absolute;left:112px;right:64px;top:118px;bottom:30px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:13px">' + cards + '</div>';
   };
 
-  // ---- análisis de materialidad / doble materialidad (slide 23) ----
-  V.doublemat = function (s, d) {
-    return gri(false) +
-      '<div class="sl-title">Análisis de materialidad</div>' +
-      '<div class="sl-body"><div class="callout" data-step="0" style="margin-bottom:18px">El análisis de materialidad es un proceso estratégico para <b>identificar y priorizar los temas más relevantes</b> que afectan al negocio y a sus grupos de interés.</div>' +
-      '<div class="grid2" style="height:auto">' +
-      '<div class="gcard blue" data-step="1"><b>Materialidad de impacto</b>Efectos de la organización sobre la economía, el medio ambiente y las personas. <b style="display:inline">Es el enfoque del GRI.</b></div>' +
-      '<div class="gcard" data-step="2"><b>Materialidad financiera</b>Cuestiones ASG que generan riesgos u oportunidades financieras para la organización.</div>' +
-      '</div>' +
-      '<div class="callout" data-step="3" style="margin-top:18px">Ambos enfoques son <b>complementarios</b>: juntos ofrecen una visión integral de la sostenibilidad (doble materialidad, Comisión Europea, 2019).</div>' +
-      '</div></div>';
+  // ---- Cierre (slide 10) ----
+  V.closing = function (s, d) {
+    return '<div class="sl-closing">' +
+      '<svg class="arrow" viewBox="0 0 200 200" style="fill:#5C7CB0"><path d="M20 60h60v-40l100 80-100 80v-40H20z"/></svg>' +
+      gri(true) +
+      '<div class="box"><div style="width:96px;height:96px;border-radius:50%;background:#fff;color:#22549E;font-weight:bold;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px">GRI</div>' +
+      '<h1>Fin de la Introducción</h1>' +
+      '<p>A continuación, el Módulo 1: tipos de texto, proceso de escritura, estructura y estilo.</p>' +
+      '<button class="big-btn" onclick="location.reload()">Volver al inicio</button></div></div>';
   };
-
-  // ---- resumen final (slide 97) ----
-  V.summary = function (s, d) {
-    const items = d.bullets || ['Contexto del análisis de materialidad', 'Proceso para la definición de la materialidad', 'Determinación de la información a reportar'];
-    const rows = items.map((t, i) => '<div class="sum-item" data-step="' + i + '"><div class="ck">' + SVG.check + '</div><div>' + esc(t) + '</div></div>').join('');
-    return gri(false) +
-      '<div class="sl-panel"><div class="pt">Resumen</div></div>' +
-      '<div class="sl-body"><div style="font-size:16px;color:#5B6675;margin-bottom:18px" data-step="always">Un recorrido para realizar un análisis de materialidad conforme a los Estándares GRI:</div><div class="sum-list" style="height:auto">' + rows + '</div></div>';
-  };
-
-  // ---- agrupación de impactos en temas (slide 58) — diagrama del PPT ----
-  V.agrupacion = function (s, d) {
-    return gri(false) +
-      '<div class="sl-panel" style="width:340px"><div class="pt">Agrupación de los impactos en temas</div></div>' +
-      '<div class="sl-body" style="left:390px;right:48px;top:70px;bottom:40px;display:flex;flex-direction:column;gap:16px">' +
-      '<div class="callout" data-step="0">La organización puede <b>agrupar los impactos en temas</b>, según categorías generales por actividad comercial, grupos de interés, tipo de relación comercial, o por un recurso económico o medioambiental.</div>' +
-      '<div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0" data-step="1">' +
-      '<img src="' + IMG + 'agrupacion.png" alt="Ejemplo de agrupación de temas del sector (GRI 11): Medio Ambiente, Empleo, Ética y gobierno, Derechos Humanos" style="max-width:100%;max-height:100%;object-fit:contain">' +
-      '</div></div>';
-  };
-
-  // ---- contenidos GRI 3-x (slides 91, 92) ----
-  V.gri3 = function (s, d) {
-    const cards = (d.cards || []).map((c, i) =>
-      '<div class="gri3-card" data-step="' + i + '"><div class="gri3-hd">' + esc(c[0]) + '</div><ul class="gri3-list">' +
-      c[1].map(li => '<li>' + esc(li) + '</li>').join('') + '</ul></div>'
-    ).join('');
-    const cols = (d.cards || []).length > 1 ? 'grid-template-columns:1fr 1fr' : 'grid-template-columns:1fr';
-    return gri(false) +
-      '<div class="sl-title sm">Contenidos sobre los temas materiales</div>' +
-      '<div class="sl-body" style="top:104px"><div style="display:grid;' + cols + ';gap:22px;height:100%;align-content:start">' + cards + '</div></div>';
-  };
-
-  // helpers compartidos
-  function caseTag(t) { return '<div class="case-tag"><div class="ic">' + SVG.clip + '</div>' + esc(t) + '</div>'; }
-  function anexoCTA() {
-    return '<a class="anexo-cta" href="anexos/Caso-de-estudio-Alimentos-SA.pdf" target="_blank">' + SVG.download + ' Descargar caso de estudio (PDF)</a>';
-  }
 
   // ============================================================
-  //  OVERRIDES por número de diapositiva
+  //  OVERRIDES por número de diapositiva (ppt)
   // ============================================================
-  window.SLIDE_OVERRIDES = {
-    1: { kind: 'cover', h1: 'Materialidad de impacto', sub: 'Tutorías GRI', photo: 'image2.jpeg', navTitle: 'Portada' },
-    3: { kind: 'toc', moduleLabel: 'Contenido de la tutoría', items: ['Módulo 1: Introducción a los Estándares GRI', 'Módulo 2: Contexto del análisis de materialidad', 'Módulo 3: Proceso para la definición de la materialidad', 'Módulo 4: Determinación de la información a reportar'], numbered: true, navTitle: 'Contenido de la tutoría' },
-    6: { kind: 'panelBullets', title: '¿Qué es el GRI?', bullets: ['El GRI (Global Reporting Initiative) es una organización internacional independiente que ayuda a las organizaciones a asumir la responsabilidad de sus impactos.', 'Proporciona un lenguaje común global para comunicar los impactos en la economía, el medio ambiente y las personas, incluidos los derechos humanos.', 'Sus Estándares permiten informar de forma transparente sobre las contribuciones, positivas o negativas, al desarrollo sostenible.'] },
-    4: { kind: 'divider', variant: 'module', title: 'Módulo 1: Introducción a los Estándares GRI', navTitle: 'Módulo 1 (intro)' },
-    7: { kind: 'stdsystem', navTitle: 'Sistema de los Estándares GRI' },
-    8: { kind: 'conceptDef', active: 0, def: 'Se refiere a los efectos que una organización tiene o podría tener sobre la economía, el medio ambiente y las personas, incluidos sus derechos humanos. Pueden ser positivos o negativos, reales o potenciales, de corto o largo plazo, intencionados o no, reversibles o irreversibles. Los impactos en la economía, el medio ambiente y las personas están interrelacionados.' },
-    9: { kind: 'conceptDef', active: 1, def: 'Es el proceso que una organización sigue para identificar, prevenir, mitigar y gestionar sus impactos. Debe abordar los impactos negativos potenciales mediante prevención o mitigación, y los reales mediante remediación. Los impactos se priorizan según su gravedad y probabilidad; en derechos humanos, la gravedad es el factor principal.' },
-    10: { kind: 'conceptDef', active: 2, def: 'Al usar los Estándares GRI, una organización identifica múltiples impactos pero se enfoca en los más significativos: los temas materiales. Un tema material puede abarcar impactos económicos, ambientales y sociales a la vez. Por ejemplo, "agua y efluentes" puede ser material si el uso de agua afecta tanto a los ecosistemas como al acceso al agua de las comunidades.' },
-    11: { kind: 'conceptDef', active: 3, def: 'Son individuos o colectivos que se ven o podrían verse afectados por las actividades de una organización: empleados, comunidades, clientes, proveedores, gobiernos, ONG, inversores, sindicatos y grupos vulnerables, entre otros. La debida diligencia se enfoca en identificar los intereses que podrían verse afectados negativamente, incluso de grupos sin relación directa con la organización.' },
-    12: { kind: 'conform', active: 1, navTitle: '¿Cómo se reporta? (1/5)' },
-    13: { kind: 'conform', active: 2, navTitle: '¿Cómo se reporta? (2/5)' },
-    14: { kind: 'conform', active: 4, navTitle: '¿Cómo se reporta? (3/5)' },
-    15: { kind: 'conform', active: 6, navTitle: '¿Cómo se reporta? (4/5)' },
-    16: { kind: 'conform', active: 9, navTitle: '¿Cómo se reporta? (5/5)' },
-    17: { kind: 'bullets', title: 'Opción "En referencia"', sub: 'Cuando no se pueden cumplir todos los requisitos de conformidad, se cumplen 3 requisitos:', bullets: ['Publicar un índice de contenidos GRI.', 'Proporcionar una declaración de uso.', 'Notificar a GRI.', 'Además, se debería aplicar los 8 principios de elaboración de informes y explicar cómo se gestionan los impactos (Contenido 3-3), e iniciar la transición hacia la opción "De conformidad".'], navTitle: 'Opción "En referencia"' },
-    18: { kind: 'omissions', navTitle: 'Uso de las omisiones' },
-    22: { kind: 'sostenible', navTitle: 'Desarrollo sostenible' },
-    23: { kind: 'doublemat', navTitle: 'Análisis de materialidad' },
-    24: { kind: 'timeline4', navTitle: 'Proceso de determinación (4 pasos)' },
-    54: { kind: 'bullets', title: 'Comprensión de los impactos reales y potenciales', sub: 'Tips de reporte', navTitle: 'Impactos reales y potenciales · Tips', bullets: ['Recurrir a distintas fuentes de información.', 'Considerar los impactos descritos en los Estándares Sectoriales GRI aplicables.', 'Evaluar el contexto e identificar los impactos de forma continua.', 'Priorizar los impactos negativos, porque son los que pueden causar mayor afectación.', 'No limitarse a los asuntos o programas que la organización ya está gestionando.'] },
-    58: { kind: 'agrupacion', navTitle: 'Agrupación de impactos en temas' },
-    63: { kind: 'divider', variant: 'step', title: 'Paso 3 Evaluación de impactos', navTitle: 'Paso 3 · Evaluación de impactos' },
-    65: { kind: 'bullets', title: '¿Cómo evaluar los impactos?', navTitle: '¿Cómo evaluar los impactos?', bullets: ['Impactos positivos — Escala y alcance: cuán beneficioso es el impacto y su extensión sobre individuos o recursos.', 'Impactos positivos — Probabilidad: posibilidad de que el impacto se produzca.', 'Impactos negativos — Gravedad: escala, alcance y carácter irremediable del daño.', 'Impactos negativos — Probabilidad: posibilidad de que el impacto se produzca.', 'En impactos sobre los derechos humanos, la gravedad prevalece sobre la probabilidad.'] },
-    49: { kind: 'caseinfo', navTitle: 'Caso: información e indicadores' },
-    60: {
-      kind: 'impacttable', stage: 'abastecimiento', navTitle: 'Impactos: abastecimiento',
-      rows: [
-        ['Programas de desarrollo social generan empleo e infraestructura en comunidades locales.', 'Las compras locales pueden impulsar el crecimiento económico de las comunidades.', 'Emisiones de GEI de la agricultura (metano, óxido nitroso) que contribuyen al cambio climático.', 'Condiciones laborales precarias, bajos salarios y largas jornadas de los trabajadores agrícolas.'],
-        ['', '', 'Efectos negativos en la biodiversidad por la expansión de la frontera agrícola.', 'Riesgo de violaciones a derechos humanos (trabajo infantil, forzoso) y uso de agua en zonas de estrés hídrico.'],
-      ]
-    },
-    61: {
-      kind: 'impacttable', stage: 'operación', navTitle: 'Impactos: operación',
-      rows: [
-        ['La mejora de condiciones laborales aumenta la calidad de vida y la satisfacción de los empleados.', 'La presencia de la empresa impulsa el desarrollo económico de las zonas de influencia.', 'Emisiones de contaminantes al aire (CO2, metano, COV) por maquinaria y calderas.', 'Residuos de manufactura y empaque que contaminan y afectan ecosistemas si no se gestionan.'],
-        ['', '', 'El desperdicio de alimentos genera contaminación y emisiones adicionales.', 'Consumo de agua en zonas de alto estrés hídrico y riesgo de accidentes laborales.'],
-      ]
-    },
-    62: {
-      kind: 'impacttable', stage: 'distribución', navTitle: 'Impactos: distribución',
-      rows: [
-        ['La distribución crea empleos y beneficios económicos en el sector logístico.', 'Una distribución eficiente fortalece las relaciones comerciales con minoristas y socios.', 'Emisiones de la flota a diésel y gasolina; residuos de los productos vendidos.', 'Etiquetado sin información suficiente que puede desinformar al consumidor final.'],
-        ['', '', 'Dependencia de combustibles fósiles no renovables.', 'Efectos en la salud de los consumidores por las características nutricionales.'],
-      ]
-    },
-    69: { kind: 'evaltable', navTitle: 'Caso: temas a evaluar' },
-    70: {
-      kind: 'evalcard', impact: 'Cambio climático (emisiones de GEI)', color: 'var(--purple)', navTitle: 'Evaluación: cambio climático',
-      rows: [
-        ['Gravedad', 'Alto —', 'toda la cadena de valor depende de combustibles fósiles, con impacto significativo en el cambio climático.'],
-        ['Escala', '', 'Contaminación del aire por combustibles fósiles que deteriora la calidad ambiental y afecta a la comunidad.'],
-        ['Alcance', 'Muy alto —', 'puede afectar la calidad de vida de poblaciones aledañas por las emisiones.'],
-        ['Irremediable', 'Grado medio —', 'la remediación exige recursos humanos, técnicos, tecnológicos y financieros.'],
-        ['Probabilidad', 'Muy alta —', 'sin un control efectivo en origen, los impactos se harán evidentes.'],
-      ]
-    },
-    71: {
-      kind: 'evalcard', impact: 'Seguridad y salud en el trabajo', color: 'var(--orange-strong)', navTitle: 'Evaluación: SST',
-      rows: [
-        ['Gravedad', 'Medio —', 'el manejo de maquinaria, vehículos y sustancias químicas puede causar accidentes y enfermedades laborales.'],
-        ['Escala', '', 'Exposición de trabajadores en abastecimiento (fertilizantes), producción (maquinaria) y distribución (carga pesada).'],
-        ['Alcance', 'Alto —', 'problemas respiratorios y dermatológicos, atrapamientos, fracturas y lesiones osteomusculares.'],
-        ['Irremediable', 'Grado medio —', 'medidas administrativas, preventivas y correctivas contrarrestan la ocurrencia.'],
-        ['Probabilidad', 'Media —', 'por la naturaleza de las actividades industriales en las tres etapas.'],
-      ]
-    },
-    72: {
-      kind: 'evalcard', impact: 'Desarrollo de las comunidades locales', color: 'var(--teal)', navTitle: 'Evaluación: comunidades',
-      rows: [
-        ['Escala', '', 'Impacto significativo en el desarrollo económico y social mediante programas con la comunidad aledaña.'],
-        ['Alcance', 'Baja —', 'los programas representan solo el 2 % del valor distribuido en el año; benefician a la región pero no son significativos para la compañía.'],
-        ['Probabilidad', 'Media —', 'los programas de desarrollo social generan impactos positivos y desarrollan capacidades.'],
-      ]
-    },
-    89: { kind: 'bullets', title: '¿Cómo identificar los contenidos para un tema material?', navTitle: 'Identificar contenidos', bullets: ['Presentar información solo de los contenidos relacionados con los temas materiales.', 'No hay un número mínimo de contenidos: depende de los impactos identificados.', 'Un tema material puede requerir más de un Estándar Temático.', 'Cuando aplique, usar los Estándares Sectoriales GRI.', 'Si un impacto no está en los Estándares GRI, la organización puede crear indicadores propios.'] },
-    90: { kind: 'bullets', title: 'Recomendaciones para identificar la información a reportar', navTitle: 'Recomendaciones de reporte', bullets: ['Identificar los Estándares GRI relevantes para cada tema material.', 'Relacionar los temas materiales con los contenidos GRI (matriz de vínculo).', 'Considerar los insumos de los diálogos con grupos de interés.', 'Integrar los contenidos en la estructura del reporte con tablas y gráficos.', 'Monitoreo y actualización continua del informe.'] },
-    91: { kind: 'gri3', navTitle: 'Contenidos GRI 3-1 y 3-2', cards: [['Contenido 3-1 · Proceso de determinación de los temas materiales', ['Describir el proceso seguido para determinar los temas materiales.', 'Cómo se identificaron los impactos reales y potenciales en toda la cadena de valor.', 'Cómo se priorizaron los impactos según su importancia.', 'Especificar los grupos de interés y expertos que participaron.']], ['Contenido 3-2 · Lista de temas materiales', ['Enumerar los temas materiales de la organización.', 'Informar los cambios frente a la lista del periodo anterior.']]] },
-    92: { kind: 'gri3', navTitle: 'Contenido GRI 3-3', cards: [['Contenido 3-3 · Gestión de los temas materiales', ['Describir los impactos reales y potenciales, negativos y positivos.', 'Indicar la relación de la organización con los impactos negativos.', 'Describir políticas y compromisos frente al tema material.', 'Medidas para prevenir, mitigar y remediar los impactos.', 'Seguimiento de la eficacia: metas, objetivos, indicadores y lecciones aprendidas.', 'Cómo la participación de los grupos de interés influyó en las medidas adoptadas.']]] },
-    97: { kind: 'summary', navTitle: 'Resumen del curso', bullets: ['Entendimos la importancia del análisis de materialidad para las organizaciones.', 'Recorrimos el proceso para realizar el análisis de materialidad.', 'Abordamos la selección de indicadores y el reporte según los temas materiales.'] },
-    98: { kind: 'closing', navTitle: 'Cierre' },
-  };
+  window.SLIDE_OVERRIDES = {};  // Materialidad: todo sale de slides_html.json (pdfmix)
 })();

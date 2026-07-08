@@ -11,7 +11,8 @@
   const QUIZ_PHOTOS = ['image34.jpeg', 'image34.jpeg'];
 
   function photoFor(s) {
-    return 'image34.jpeg';
+    const q = window.SlideArch && window.SlideArch.firstImg(s, ['jpeg', 'jpg']);
+    return q || 'image34.jpeg';
   }
 
   // ---------- estado por diapositiva ----------

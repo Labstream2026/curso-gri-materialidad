@@ -1,0 +1,148 @@
+{
+ "quizzes": {
+  "s27": {
+   "badge": "Módulo 2 · Pregunta 1 de 3",
+   "title": null,
+   "question": "¿Cuál es el principal objetivo del análisis de materialidad en el contexto del estándar GRI? Seleccione la opción que considere correcta",
+   "options": [
+    {
+     "letter": "a",
+     "text": "Determinar la estructura organizacional y la cadena de suministro de la empresa."
+    },
+    {
+     "letter": "b",
+     "text": "Identificar y priorizar los impactos más significativos sobre la economía, el medio ambiente y las personas."
+    },
+    {
+     "letter": "c",
+     "text": "Calcular la huella de carbono de la empresa y establecer objetivos de reducción de emisiones."
+    },
+    {
+     "letter": "d",
+     "text": "Evaluar el desempeño financiero de la empresa y su impacto en el mercado de valores."
+    }
+   ],
+   "correct": "b"
+  },
+  "s29": {
+   "badge": "Módulo 2 · Pregunta 2 de 3",
+   "title": null,
+   "question": "¿Por qué es importante el análisis de materialidad para una organización? Seleccione la opción que considere correcta",
+   "options": [
+    {
+     "letter": "a",
+     "text": "Permite a la empresa enfocarse únicamente en las áreas de mayor rentabilidad financiera."
+    },
+    {
+     "letter": "b",
+     "text": "Ayuda a la organización a cumplir con todas las regulaciones ambientales internacionales."
+    },
+    {
+     "letter": "c",
+     "text": "Facilita la identificación de los temas de sostenibilidad más relevantes para la organización y sus grupos de interés."
+    },
+    {
+     "letter": "d",
+     "text": "Garantiza que la empresa será reconocida en índices de sostenibilidad y rankings corporativos"
+    }
+   ],
+   "correct": "c"
+  },
+  "s31": {
+   "badge": "Módulo 2 · Pregunta 3 de 3",
+   "title": null,
+   "question": "¿Cuáles son los pasos para realizar el análisis de materialidad? Seleccione la opción que considere correcta",
+   "options": [
+    {
+     "letter": "a",
+     "text": "Entender el contexto de la organización, identificar impactos reales y potenciales, evaluar los impactos y priorizar los impactos más significativos."
+    },
+    {
+     "letter": "b",
+     "text": "Entender el contexto de la organización, identificar impactos potenciales, evaluar los impactos y reportarlos."
+    },
+    {
+     "letter": "c",
+     "text": "Entender el contexto de la organización, identificar impactos reales y potenciales, priorizar los impactos significativos."
+    },
+    {
+     "letter": "d",
+     "text": "Identificación de temas relevantes, priorización de temas y reporte de impactos."
+    }
+   ],
+   "correct": "a"
+  },
+  "s74": {
+   "badge": "Módulo 3 · Pregunta 1 de 3",
+   "title": null,
+   "question": "En el ejemplo de la compañía de alimentos que estamos analizando uno de los impactos identificados es el uso excesivo de agua en la producción de cultivos. ¿Cómo podría la compañía evaluar la importancia de este impacto en su análisis de materialidad según el estándar GRI? Seleccione la opción que considere correcta",
+   "options": [
+    {
+     "letter": "a",
+     "text": "Ignorando el impacto, ya que el uso de agua no afecta directamente las ganancias de la compañía."
+    },
+    {
+     "letter": "b",
+     "text": "Centrándose únicamente en el aumento del costo de las materias primas por el impacto en los costos de producción para determinar la importancia del impacto."
+    },
+    {
+     "letter": "c",
+     "text": "Comparando el uso de agua de la compañía con el de otras industrias para establecer una norma de importancia."
+    },
+    {
+     "letter": "d",
+     "text": "Evaluando la relevancia del uso de agua para los grupos de interés, la gravedad del impacto y la probabilidad de ocurrencia."
+    }
+   ],
+   "correct": "d"
+  },
+  "s76": {
+   "badge": "Módulo 3 · Pregunta 2 de 3",
+   "title": null,
+   "question": "La compañía de nuestro caso de estudio ha identificado que uno de sus productos más populares está siendo elaborado con ingredientes que provienen de una región donde se han reportado violaciones a los derechos humanos. ¿Cómo debería la compañía evaluar la importancia de este impacto? Seleccione la opción que considere correcta",
+   "options": [
+    {
+     "letter": "a",
+     "text": "Evaluando los impactos que tienen esas violaciones de los derechos humanos en los grupos de interés y el potencial efecto sobre la sociedad en general."
+    },
+    {
+     "letter": "b",
+     "text": "Analizando los riesgos relacionados con multas por tener relaciones comerciales en una cadena de abastecimiento con malas prácticas de derechos humanos."
+    },
+    {
+     "letter": "c",
+     "text": "Evaluando el impacto en la reputación de la marca y la importancia de las prácticas laborales éticas para los grupos de interés."
+    },
+    {
+     "letter": "d",
+     "text": "Considerando solamente el impacto que tendrían el cambio de proveedor en los costos de producción."
+    }
+   ],
+   "correct": "a"
+  },
+  "s78": {
+   "badge": "Módulo 3 · Pregunta 3 de 3",
+   "title": null,
+   "question": "En el desarrollo de su análisis de materialidad, la organización busca identificar sus impactos positivos materiales relacionados con sus programas de inversión social ¿cuál de las situaciones indicadas podría calificarse como un asunto material? Seleccione la opción que considere correcta",
+   "options": [
+    {
+     "letter": "a",
+     "text": "Una iniciativa de educación nutricional que ha beneficiado a 50 personas en la comunidad local, aumentando su conocimiento sobre dietas saludables."
+    },
+    {
+     "letter": "b",
+     "text": "Un proyecto de desarrollo de infraestructura que ha construido un nuevo centro comunitario utilizado por 15 personas semanalmente para eventos locales."
+    },
+    {
+     "letter": "c",
+     "text": "Un programa de apoyo a pequeños agricultores que ha incrementado las prácticas agrícolas sostenibles y mejorado las condiciones de vida de 300 familias en la región."
+    },
+    {
+     "letter": "d",
+     "text": "Un taller de empoderamiento laboral que ha capacitado exitosamente a 10 mujeres de la comunidad en habilidades de liderazgo y gestión empresarial."
+    }
+   ],
+   "correct": "c"
+  }
+ }
+}

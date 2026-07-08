@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tutorías GRI · Materialidad de impacto</title>
-  <link rel="stylesheet" href="css/course.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/course.css?v=20">
 </head>
 <body>
   <div id="app">
@@ -20,19 +23,19 @@
       <div class="mod-chip" id="mod-chip">Bienvenida</div>
       <div class="spacer"></div>
       <button class="tb-btn active" id="btn-index" title="Índice (i)">
-        <svg viewBox="0 0 24 24"><path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z"/></svg> <span>Índice</span>
+        <svg viewBox="0 0 24 24"><path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z"/></svg> Índice
       </button>
       <button class="tb-btn" id="btn-transcript" title="Transcripción (t)">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4zm0 4h10v2H4z"/></svg> <span>Transcripción</span>
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v2H4zm0 4h16v2H4zm0 4h10v2H4zm0 4h10v2H4z"/></svg> Transcripción
       </button>
       <button class="tb-btn" id="btn-anexo" title="Caso de estudio (PDF)">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> <span>Caso de estudio</span>
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> Caso de estudio
       </button>
-      <div class="ts-ctrl" title="Tamaño del texto">
-        <button id="btn-ts-down" title="Reducir texto">A<span class="mn">−</span></button>
-        <span id="ts-label">A</span>
-        <button id="btn-ts-up" title="Aumentar texto">A<span class="pl">+</span></button>
-      </div>
+      <!-- SCORM-DL-START (solo vista previa; se elimina en el paquete SCORM) -->
+      <a class="tb-btn" id="btn-scorm" style="text-decoration:none" href="https://github.com/Labstream2026/curso-gri-materialidad/releases/download/scorm-v1/curso-gri-materialidad-scorm12.zip" title="Descargar el curso en formato SCORM 1.2 (ZIP para subir a un LMS)">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.3-3.3 1.4 1.4L12 17.4l-4.7-5.7 1.4-1.4 2.3 2.3V3h2zM5 19h14v2H5z"/></svg> Descargar SCORM
+      </a>
+      <!-- SCORM-DL-END -->
       <button class="tb-btn" id="btn-fs" title="Pantalla completa (f)">
         <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7zm-2-4h2V7h3V5H5zm12 7h-3v2h5v-5h-2zM14 5v2h3v3h2V5z"/></svg>
       </button>
@@ -64,7 +67,7 @@
               <div><b>4</b> módulos</div>
               <div><b>98</b> diapositivas</div>
               <div><b>9</b> evaluaciones</div>
-              <div><b>~60</b> min</div>
+              <div><b>~1</b> h</div>
             </div>
             <div>
               <button class="big-btn" id="ov-start">▶ Comenzar curso</button>
@@ -108,7 +111,7 @@
         <div id="proginfo">
           <span id="t-cur">0:00</span> / <span id="t-dur">0:00</span>
           <div id="segdots"></div>
-          <span id="slidecount">Diapositiva 1 / 98</span>
+          <span id="slidecount">Diapositiva 1</span>
         </div>
       </div>
 
@@ -116,6 +119,10 @@
         <div class="c-toggle on" id="autoplay-toggle" title="Reproducción automática">
           <span class="sw"></span><span>Auto</span>
         </div>
+      </div>
+      <div class="c-group" title="Tamaño del texto">
+        <button class="c-txt small" id="fs-dec" title="Reducir texto">A−</button>
+        <button class="c-txt big" id="fs-inc" title="Agrandar texto">A+</button>
       </div>
       <div class="c-group" title="Velocidad">
         <select class="c-sel" id="rate-sel">
@@ -133,13 +140,10 @@
     </footer>
   </div>
 
-  <script src="js/slides.js"></script>
-  <script src="js/modules.js"></script>
-  <script src="js/autolayout.js"></script>
-  <script src="js/overrides.js"></script>
-  <script src="js/overrides_extra.js"></script>
-  <script src="js/overrides_mat.js"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/course.js"></script>
+  <script src="js/slides.js?v=20"></script>
+  <script src="js/modules.js?v=20"></script>
+  <script src="js/overrides.js?v=20"></script>
+  <script src="js/quiz.js?v=20"></script>
+  <script src="js/course.js?v=20"></script>
 </body>
 </html>

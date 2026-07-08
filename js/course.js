@@ -16,6 +16,7 @@
     autoplay: true,
     rate: 1,
     volume: 1,
+    fontScale: 0,         // 0 normal, 1 grande, 2 extra
     revealed: 0,          // steps revelados en la diapositiva actual
     quizAnswered: {},     // id -> bool
     quizGatePassed: {},   // id -> bool (ya se puede avanzar)
@@ -25,19 +26,9 @@
     partStartTs: 0,
     scheduledReveals: [],
     plan: [],
-    audioGen: 0,
-    tsIndex: 1,
-    collapsedMods: {},
+    stepTiming: null,     // step -> fracción dentro de su parte (sincronía con la narración)
     booted: false,
   };
-
-  // niveles de tamaño de texto (control A-/A+)
-  const TS_LEVELS = [
-    { v: 0.92, label: 'Compacto' },
-    { v: 1.06, label: 'Normal' },
-    { v: 1.2, label: 'Grande' },
-    { v: 1.34, label: 'Extra grande' },
-  ];
 
   // ---------- def combinada (auto + overrides) ----------
   function mergedDef(s) {
@@ -58,10 +49,11 @@
       localStorage.setItem(LS_KEY, JSON.stringify({
         i: State.i, visited: State.visited, quizAnswered: State.quizAnswered,
         quizGate: State.quizGatePassed, rate: State.rate, volume: State.volume,
-        autoplay: State.autoplay, tsIndex: State.tsIndex, collapsedMods: State.collapsedMods,
-        t: Date.now(),
+        autoplay: State.autoplay, fontScale: State.fontScale, t: Date.now(),
       }));
     } catch (e) {}
+    // en el paquete SCORM, reporta avance y puntaje al LMS
+    if (window.ScormBridge) { try { window.ScormBridge.sync(State); } catch (e) {} }
   }
   function loadProgress() {
     try {
@@ -74,12 +66,15 @@
   //  ARRANQUE
   // ============================================================
   async function boot() {
-    const [modelRes, defsRes] = await Promise.all([
-      fetch(MODEL_URL),
-      fetch('data/slidedefs_auto.json'),
+    const V = '?v=20';
+    const [modelRes, defsRes, phRes] = await Promise.all([
+      fetch(MODEL_URL + V),
+      fetch('data/slidedefs_auto.json' + V),
+      fetch('data/slides_html.json' + V).catch(() => null),
     ]);
     State.model = await modelRes.json();
     window.SLIDEDEFS_AUTO = await defsRes.json();
+    try { window.PPTX_HTML = phRes ? await phRes.json() : {}; } catch (e) { window.PPTX_HTML = {}; }
     State.slides = State.model.slides;
     // vincula defs de vista (auto + overrides)
     State.slides.forEach(s => { s.def = mergedDef(s); });
@@ -92,17 +87,15 @@
       State.rate = saved.rate || 1;
       State.volume = saved.volume == null ? 1 : saved.volume;
       State.autoplay = saved.autoplay !== false;
-      if (typeof saved.tsIndex === 'number') State.tsIndex = saved.tsIndex;
-      State.collapsedMods = saved.collapsedMods || {};
+      State.fontScale = saved.fontScale || 0;
     }
 
     buildSidebar();
     bindControls();
     bindKeys();
-    setupResponsive();
-    applyTextSize();
     fitStage();
-    window.addEventListener('resize', () => { fitStage(); });
+    applyFontScale();
+    window.addEventListener('resize', fitStage);
 
     // overlay de inicio
     const hasProgress = saved && Object.keys(State.visited).length > 1;
@@ -127,49 +120,6 @@
   function hideOverlay() { $('#overlay').classList.add('hidden'); }
 
   // ============================================================
-  //  RESPONSIVE (paneles como overlay en móvil)
-  // ============================================================
-  // ---------- tamaño de texto ----------
-  function applyTextSize() {
-    const lvl = TS_LEVELS[clamp(State.tsIndex, 0, TS_LEVELS.length - 1)];
-    const stage = $('#stage');
-    if (stage) stage.style.setProperty('--ts', String(lvl.v));
-    const lbl = $('#ts-label'); if (lbl) lbl.textContent = lvl.label;
-    const dn = $('#btn-ts-down'); if (dn) dn.disabled = State.tsIndex <= 0;
-    const up = $('#btn-ts-up'); if (up) up.disabled = State.tsIndex >= TS_LEVELS.length - 1;
-  }
-  function bumpTextSize(dir) {
-    State.tsIndex = clamp(State.tsIndex + dir, 0, TS_LEVELS.length - 1);
-    applyTextSize(); saveProgress();
-  }
-
-  const isMobile = () => window.matchMedia('(max-width:900px)').matches;
-  function setupResponsive() {
-    // scrim para cerrar overlays en móvil
-    if (!$('#scrim')) {
-      const sc = el('div'); sc.id = 'scrim';
-      sc.onclick = closePanels;
-      $('#app').appendChild(sc);
-    }
-    if (isMobile()) {
-      $('#sidebar').classList.add('hidden');
-      $('#transcript').classList.add('hidden');
-      toggleActive('#btn-index', false);
-    }
-  }
-  function closePanels() {
-    $('#sidebar').classList.add('hidden');
-    $('#transcript').classList.add('hidden');
-    $('#scrim').classList.remove('show');
-    toggleActive('#btn-index', false);
-    toggleActive('#btn-transcript', false);
-  }
-  function syncScrim() {
-    const open = isMobile() && (!$('#sidebar').classList.contains('hidden') || !$('#transcript').classList.contains('hidden'));
-    $('#scrim').classList.toggle('show', open);
-  }
-
-  // ============================================================
   //  ESCALA DEL STAGE (1280x720 responsive)
   // ============================================================
   function fitStage() {
@@ -181,6 +131,7 @@
     const scale = Math.min(w / 1280, h / 720);
     stage.style.transform = 'scale(' + scale + ')';
   }
+  function applyFontScale() { const st = $('#stage'); if (st) st.dataset.fs = String(State.fontScale || 0); }
 
   // ============================================================
   //  ÍNDICE LATERAL
@@ -192,36 +143,24 @@
     State.slides.forEach((s, idx) => {
       if (s.module !== curMod) {
         curMod = s.module;
-        const mod = curMod;
-        const collapsed = !!State.collapsedMods[mod];
-        const head = el('button', 'sb-mod' + (collapsed ? ' collapsed' : ''));
-        head.dataset.mod = mod;
-        head.innerHTML = '<span class="caret">▾</span><span class="mt">' + esc(State.model.modules[mod]) + '</span><span class="mcount"></span>';
-        head.onclick = () => toggleModule(mod);
-        list.appendChild(head);
-        group = el('div', 'sb-group' + (collapsed ? ' collapsed' : ''));
-        group.dataset.mod = mod;
-        list.appendChild(group);
+        const mod = el('div', 'sb-mod');
+        const mt = el('span', 'mtitle'); mt.textContent = State.model.modules[curMod];
+        const chev = el('span', 'chev'); chev.textContent = '▼';
+        mod.appendChild(mt); mod.appendChild(chev);
+        const grp = el('div', 'sb-group');
+        mod.onclick = () => { mod.classList.toggle('collapsed'); grp.classList.toggle('collapsed'); };
+        list.appendChild(mod); list.appendChild(grp);
+        group = grp;
       }
       const item = el('button', 'sb-item');
       item.dataset.idx = idx;
-      item.dataset.mod = curMod;
       const badge = s.type === 'quiz' ? '<span class="qz">QUIZ</span>' : '';
       const label = sidebarLabel(s);
       item.innerHTML = '<span class="st">○</span><span class="n">' + label + '</span>' + badge;
-      item.onclick = () => { goTo(idx, true); if (isMobile()) closePanels(); };
+      item.onclick = () => { goTo(idx, true); };
       (group || list).appendChild(item);
     });
     refreshSidebar();
-  }
-  const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  function toggleModule(mod) {
-    State.collapsedMods[mod] = !State.collapsedMods[mod];
-    const collapsed = State.collapsedMods[mod];
-    $$('.sb-group[data-mod="' + mod + '"]').forEach(g => g.classList.toggle('collapsed', collapsed));
-    $$('.sb-mod[data-mod="' + mod + '"]').forEach(h => h.classList.toggle('collapsed', collapsed));
-    saveProgress();
   }
   function sidebarLabel(s) {
     if (s.def && s.def.navTitle) return s.def.navTitle;
@@ -231,12 +170,6 @@
     return t.length > 46 ? t.slice(0, 44) + '…' : t;
   }
   function refreshSidebar() {
-    const curMod = State.slides[State.i] && State.slides[State.i].module;
-    // auto-expandir el módulo de la diapositiva actual
-    if (curMod != null && State.collapsedMods[curMod]) { State.collapsedMods[curMod] = false; }
-    $$('.sb-group').forEach(g => g.classList.toggle('collapsed', !!State.collapsedMods[+g.dataset.mod]));
-    $$('.sb-mod').forEach(h => h.classList.toggle('collapsed', !!State.collapsedMods[+h.dataset.mod]));
-
     $$('.sb-item').forEach(it => {
       const idx = +it.dataset.idx;
       const s = State.slides[idx];
@@ -245,20 +178,20 @@
       it.classList.toggle('done', !!done);
       $('.st', it).textContent = done ? '✓' : (idx === State.i ? '▸' : '○');
     });
-    // contador por módulo (vistas / total)
-    $$('.sb-mod').forEach(h => {
-      const mod = +h.dataset.mod;
-      const items = State.slides.filter(s => s.module === mod);
-      const dn = items.filter(s => State.visited[s.id]).length;
-      const c = $('.mcount', h); if (c) c.textContent = dn + '/' + items.length;
-    });
     const total = State.slides.length;
     const done = Object.keys(State.visited).length;
     const pct = Math.round(done / total * 100);
     $('#sb-fill').style.width = pct + '%';
     $('#sb-pct').textContent = done + ' de ' + total + ' diapositivas · ' + pct + '%';
     const cur = $('.sb-item.current');
-    if (cur) cur.scrollIntoView({ block: 'nearest' });
+    if (cur) {
+      const grp = cur.closest('.sb-group');
+      if (grp && grp.classList.contains('collapsed')) {
+        grp.classList.remove('collapsed');
+        if (grp.previousElementSibling) grp.previousElementSibling.classList.remove('collapsed');
+      }
+      cur.scrollIntoView({ block: 'nearest' });
+    }
   }
 
   // ============================================================
@@ -284,14 +217,7 @@
     if (shouldPlay) { playFromPart(0); }
     else { State.playing = false; updatePlayBtn(); prepareStaticReveal(s); }
   }
-  function next(opts) {
-    const s = State.slides[State.i];
-    // Gate de quiz: no dejar saltar un quiz sin responder desde el botón/tecla Siguiente.
-    // (El índice lateral sigue permitiendo navegar libremente con goTo.)
-    if (s && s.type === 'quiz' && !State.quizGatePassed[s.id] && !(opts && opts.force)) {
-      markWaitingQuiz(true);
-      return;
-    }
+  function next() {
     if (State.i >= State.slides.length - 1) { showEndState(); return; }
     goTo(State.i + 1, true);
   }
@@ -299,8 +225,22 @@
 
   // Gate de quiz: no auto-avanzar hasta responder
   function canAutoAdvance(s) {
+    if (s.noauto) return false;  // preguntas y guías: el usuario avanza cuando esté listo
     if (s.type === 'quiz') return !!State.quizGatePassed[s.id];
     return true;
+  }
+
+  // aviso al terminar una diapositiva autoguiada: seguir con la flecha
+  // (o elegir una opción si es un quiz sin responder)
+  function showNextHint() {
+    const node = $('#stage .sl');
+    if (!node || $('.next-hint', node)) return;
+    const s = State.slides[State.i];
+    const esQuiz = s && s.correct && !State.quizAnswered[s.id];
+    const h = el('div', 'next-hint', esQuiz
+      ? '👆 Elige una opción para continuar'
+      : 'Cuando estés listo, continúa con <b>→</b>');
+    node.appendChild(h);
   }
 
   // ============================================================
@@ -323,6 +263,11 @@
     }
     node.innerHTML = inner;
     stage.appendChild(node);
+    fitPptxText(node);
+    if (s.correct) { if ($('.quizx', node)) mountQuizX(node, s); else mountQuizLite(node, s); }
+    mountGuide(node);
+    mountAnswerBanner(node, s);
+    mountScoreCard(node, s);
 
     // calcular plan de revelado (qué steps del DOM aparecen en cada parte)
     State.plan = computeRevealPlan(node, s);
@@ -337,10 +282,183 @@
     buildSegDots(s);
   }
 
+  // Ajusta cada línea de texto del PDF a su ancho original (nuestra fuente
+  // difiere unos % de la del PPT); usa la propiedad `scale` para no pisar
+  // el transform de la animación de revelado.
+  function fitPptxText(node) {
+    $$('.pptx-slide [data-w]', node).forEach(e => {
+      const w = parseFloat(e.dataset.w);
+      const cw = e.scrollWidth;
+      if (!w || !cw) return;
+      const r = w / cw;
+      if (r > 0.75 && r < 1.35 && Math.abs(r - 1) > 0.02) {
+        e.style.transformOrigin = 'left center';
+        e.style.scale = r.toFixed(4) + ' 1';
+      }
+    });
+  }
+
+  // ============================================================
+  //  QUIZ de tarjetas (opción múltiple)
+  // ============================================================
+  function mountQuizX(node, s) {
+    const box = $('.quizx', node);
+    // texto largo: reducir tipografía hasta que quepa
+    requestAnimationFrame(() => {
+      let guard = 8;
+      while (guard-- > 0 && box.scrollHeight > box.clientHeight + 4) {
+        $$('.qx-t, .qx-q', box).forEach(e => {
+          const f = parseFloat(getComputedStyle(e).fontSize);
+          e.style.fontSize = (f - 1) + 'px';
+        });
+      }
+    });
+    const prev = State.quizAnswered[s.id];
+    if (prev) paintQuizX(box, s, typeof prev === 'string' ? prev : null);
+    $$('.qx-opt', box).forEach(b => {
+      b.onclick = () => {
+        if (State.quizAnswered[s.id]) return;
+        if (!b.classList.contains('on')) return;   // aún no lo ha leído el locutor
+        State.quizAnswered[s.id] = b.dataset.letter;
+        saveProgress();
+        paintQuizX(box, s, b.dataset.letter);
+        const good = b.dataset.letter === s.correct;
+        const chip = el('div', 'qresult ' + (good ? 'good' : 'bad'),
+          good ? '✔ ¡Correcto! Veamos por qué…'
+               : '✘ La correcta es la ' + s.correct.toUpperCase() + '). Veamos por qué…');
+        box.appendChild(chip);
+        setTimeout(() => {
+          if (State.slides[State.i] === s && State.autoplay) next();
+          else { const h = $('.next-hint', node); if (h) h.remove(); showNextHint(); }
+        }, 2400);
+      };
+    });
+  }
+  function paintQuizX(box, s, chosen) {
+    box.classList.add('answered');
+    $$('.qx-opt', box).forEach(b => {
+      const L = b.dataset.letter;
+      if (L === s.correct) b.classList.add('good');
+      else if (chosen && L === chosen) b.classList.add('bad');
+      else b.classList.add('dim');
+    });
+  }
+
+  // Guías M5/M6: ocultar la pista de scroll al desplazarse
+  function mountGuide(node) {
+    const g = $('.guidex', node);
+    if (!g) return;
+    const body = $('.gx-body', g);
+    body.addEventListener('scroll', () => { g.classList.add('scrolled'); }, { once: true });
+  }
+
+  // Franja "Tu respuesta" en la diapositiva de justificación
+  function mountAnswerBanner(node, s) {
+    if (!s.forQuiz) return;
+    const chosen = State.quizAnswered[s.forQuiz];
+    if (typeof chosen !== 'string') return;
+    const q = State.slides.find(x => x.id === s.forQuiz);
+    const good = q && chosen === q.correct;
+    const b = el('div', 'ans-banner ' + (good ? 'good' : 'bad'),
+      good ? '✔ Tu respuesta: ' + chosen.toUpperCase() + ') — correcta'
+           : '✘ Tu respuesta: ' + chosen.toUpperCase() + ') · Correcta: ' + (q ? q.correct.toUpperCase() : '') + ')');
+    node.appendChild(b);
+  }
+
+  // Puntaje al cierre del cuestionario final
+  function mountScoreCard(node, s) {
+    if (!s.scoreCard) return;
+    const qs = State.slides.filter(x => x.correct && x.id.startsWith('qs'));
+    const answered = qs.filter(x => typeof State.quizAnswered[x.id] === 'string');
+    if (!answered.length) return;
+    const good = answered.filter(x => State.quizAnswered[x.id] === x.correct).length;
+    const pct = Math.round(good / qs.length * 100);
+    const card = el('div', 'score-card',
+      '<div class="sc-big">' + good + ' de ' + qs.length + '</div>' +
+      '<div class="sc-sub">respuestas correctas en el cuestionario final · ' + pct + ' %' +
+      (answered.length < qs.length ? ' · ' + (qs.length - answered.length) + ' sin responder' : '') + '</div>');
+    node.appendChild(card);
+  }
+
+  // ============================================================
+  //  QUIZ INTERACTIVO (ligero) sobre diapositivas PDF-mix
+  //  s.correct = letra de la opción correcta; las opciones son los
+  //  bloques de texto que empiezan con "a)", "b)", ...
+  // ============================================================
+  function mountQuizLite(node, s) {
+    const wrap = $('.pptx-slide', node);
+    if (!wrap) return;
+    // agrupar líneas por paso y detectar bloques de opción
+    const groups = {};
+    $$('[data-step]', wrap).forEach(e => {
+      const k = e.dataset.step;
+      if (k === 'always' || e === wrap) return;
+      (groups[k] = groups[k] || []).push(e);
+    });
+    const options = {};
+    Object.keys(groups).forEach(k => {
+      const els = groups[k].slice().sort((a, b) => (parseFloat(a.style.top) || 0) - (parseFloat(b.style.top) || 0));
+      const m = (els[0].textContent || '').trim().toLowerCase().match(/^([a-e])\)/);
+      if (m && !options[m[1]]) options[m[1]] = groups[k];
+    });
+    const letters = Object.keys(options).sort();
+    if (letters.length < 2) return;
+
+    letters.forEach(L => {
+      const els = options[L];
+      let x0 = 1e9, y0 = 1e9, x1 = 0, y1 = 0;
+      els.forEach(e => {
+        const l = parseFloat(e.style.left) || 0, t = parseFloat(e.style.top) || 0;
+        const sc = parseFloat((e.style.scale || '1').split(' ')[0]) || 1;
+        const w = (parseFloat(e.dataset.w) || e.scrollWidth * sc);
+        const h = parseFloat(e.style.lineHeight) || 20;
+        x0 = Math.min(x0, l); y0 = Math.min(y0, t);
+        x1 = Math.max(x1, l + w); y1 = Math.max(y1, t + h);
+      });
+      const hit = el('div', 'qopt');
+      hit.style.left = (x0 - 14) + 'px'; hit.style.top = (y0 - 7) + 'px';
+      hit.style.width = (x1 - x0 + 28) + 'px'; hit.style.height = (y1 - y0 + 14) + 'px';
+      hit.dataset.letter = L;
+      hit.onclick = () => {
+        if (State.quizAnswered[s.id]) return;
+        if (!els[0].classList.contains('on')) return;  // aún no se ha revelado
+        answerQuizLite(wrap, s, L);
+      };
+      wrap.appendChild(hit);
+    });
+    // ¿ya la respondió antes? mostrar la correcta
+    if (State.quizAnswered[s.id]) paintQuizLite(wrap, s, null);
+  }
+
+  function paintQuizLite(wrap, s, chosen) {
+    $$('.qopt', wrap).forEach(h => {
+      h.classList.add('done');
+      if (h.dataset.letter === s.correct) h.classList.add('good');
+      else if (chosen && h.dataset.letter === chosen) h.classList.add('bad');
+    });
+  }
+
+  function answerQuizLite(wrap, s, L) {
+    State.quizAnswered[s.id] = true;
+    saveProgress();
+    paintQuizLite(wrap, s, L);
+    const good = L === s.correct;
+    const chip = el('div', 'qresult ' + (good ? 'good' : 'bad'),
+      good ? '✔ ¡Correcto! Veamos por qué…'
+           : '✘ La correcta es la ' + s.correct.toUpperCase() + '). Veamos por qué…');
+    wrap.appendChild(chip);
+    // pasar a la diapositiva de respuesta (narra la justificación)
+    setTimeout(() => {
+      if (State.slides[State.i] === s && State.autoplay) next();
+      else showNextHint();
+    }, 2400);
+  }
+
   // Calcula, para cada parte de audio, la lista de índices data-step del DOM
   // que deben revelarse mientras esa parte se reproduce.
   function computeRevealPlan(node, s) {
     const parts = s.parts || [];
+    State.stepTiming = null;
     // steps numéricos presentes en el DOM
     const dom = Array.from(new Set(
       $$('[data-step]', node)
@@ -364,8 +482,12 @@
       return parts.map(p => (p.steps || []).filter(k => dom.includes(k)));
     }
 
+    // Sincronía con la narración: cada bloque de texto aparece cuando el locutor lo dice
+    const sync = narrationSync(node, s, dom);
+    if (sync) { State.stepTiming = sync.timing; return sync.plan; }
+
     // Distribuir los reveals del DOM entre las partes, proporcional a su longitud
-    const weights = parts.map(p => Math.max(1, (p.tts || '').length));
+    const weights = parts.map(p => Math.max(1, (p.tts || p.text || '').length));
     const total = weights.reduce((a, b) => a + b, 0);
     const plan = parts.map(() => []);
     let assigned = 0, cum = 0;
@@ -376,6 +498,90 @@
       while (assigned < target) { plan[i].push(dom[assigned]); assigned++; }
     }
     return plan;
+  }
+
+  // normaliza texto para comparar contra la narración (minúsculas, sin tildes ni signos)
+  function normTxt(t) {
+    return (t || '').toLowerCase()
+      .replace(/ge\s+erre\s+i/g, 'gri')          // el guion TTS deletrea "GRI"
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9 ]+/g, ' ')
+      .replace(/\s+/g, ' ').trim();
+  }
+
+  // Busca dónde menciona el locutor cada bloque de texto y devuelve:
+  //  plan[i]  = steps que se revelan durante la parte i
+  //  timing[k]= fracción (0-1) dentro de esa parte en que debe aparecer el step k
+  function narrationSync(node, s, dom) {
+    const parts = s.parts || [];
+    const nt = parts.map(p => normTxt(p.tts || p.text || ''));
+    const full = nt.join(' ');
+    if (full.length < 40) return null;
+    const bounds = []; let c = 0;
+    nt.forEach(t => { bounds.push({ a: c, b: c + t.length }); c += t.length + 1; });
+    const N = full.length;
+
+    // 1) anclar cada step por RAÍCES de palabras (tolera inflexiones: "procede"/"proceda")
+    //    con una ventana de coincidencia; no exige orden monótono (layouts en columnas)
+    const narrWords = full.split(' ');
+    const wpos = []; { let o = 0; narrWords.forEach(w => { wpos.push(o); o += w.length + 1; }); }
+    const STOP = {para:1,esta:1,este:1,estas:1,estos:1,como:1,cada:1,sobre:1,entre:1,cuando:1,donde:1,tambien:1,ademas:1,pero:1,porque:1,segun:1,hacia:1,desde:1,hasta:1,otros:1,otras:1,todos:1,todas:1,unos:1,unas:1,debe:1,deben:1,puede:1,pueden:1,tiene:1,tienen:1,manera:1,parte:1,traves:1};
+    const sig = w => !STOP[w] && (w.length >= 4 || /^\d+$/.test(w));
+    const stem = w => (/^\d+$/.test(w) ? w : w.slice(0, 5));
+    const nstems = narrWords.map(w => (sig(w) ? stem(w) : null));
+
+    const pos = {}; let cursor = 0; let matched = 0; let considered = 0;
+    dom.forEach(k => {
+      let words = normTxt($$('[data-step="' + k + '"]', node).map(e => e.textContent || '').join(' ')).split(' ').filter(Boolean);
+      if (words.length > 1 && /^\d+$/.test(words[0])) words = words.slice(1);  // "1. Título" -> quitar numeración
+      const bs = words.filter(sig).slice(0, 8).map(stem);
+      if (!bs.length) return;
+      if (bs.every(b => /^\d+$/.test(b))) return;  // chips numéricos: nunca se pronuncian, se interpolan
+      considered++;
+      const need = bs.length >= 5 ? 3 : Math.min(2, bs.length);  // bloques largos: exigir más raíces (evita falsos anclajes)
+      const find = from => {
+        for (let i = from; i < narrWords.length; i++) {
+          if (!nstems[i] || bs.indexOf(nstems[i]) < 0) continue;
+          const seen = {}; seen[nstems[i]] = 1; let cnt = 1;
+          for (let j = i + 1; j < Math.min(narrWords.length, i + 25) && cnt < need; j++) {
+            if (nstems[j] && bs.indexOf(nstems[j]) >= 0 && !seen[nstems[j]]) { seen[nstems[j]] = 1; cnt++; }
+          }
+          if (cnt >= need) return i;
+        }
+        return -1;
+      };
+      let wi = find(cursor);
+      if (wi < 0 && need >= 2) wi = find(0);  // columna anterior: buscar desde el inicio
+      if (wi >= 0) { pos[k] = wpos[wi]; matched++; if (wi >= cursor) cursor = wi + 1; }
+    });
+    if (!considered) return null;
+    if (matched < Math.max(considered >= 4 ? 2 : 1, Math.ceil(considered * 0.34))) return null;  // pocos anclajes: no fiable
+
+    // 2) interpolar los steps sin anclaje entre sus vecinos del DOM
+    const anch = dom.map(k => (pos[k] !== undefined ? pos[k] : null));
+    let prevPos = 0, prevIdx = -1;
+    for (let i = 0; i < dom.length; i++) {
+      if (anch[i] !== null) { prevPos = anch[i]; prevIdx = i; continue; }
+      let j = i + 1; while (j < dom.length && anch[j] === null) j++;
+      let nextPos = j < dom.length ? anch[j] : Math.min(N, prevPos + 0.15 * N);
+      if (nextPos < prevPos) nextPos = Math.min(N, prevPos + 0.05 * N);  // vecino fuera de orden (columnas)
+      anch[i] = prevPos + (nextPos - prevPos) * ((i - prevIdx) / (j - prevIdx));
+    }
+
+    // el primer bloque (normalmente el título) no debe esperar al final de la locución
+    if (anch.length && anch[0] > 0.15 * N) anch[0] = 0.15 * N;
+
+    // 3) posición global -> (parte, fracción dentro de la parte)
+    const plan = parts.map(() => []); const timing = {};
+    dom.forEach((k, idx) => {
+      const p = clamp(anch[idx], 0, N - 1);
+      let pi = bounds.findIndex(b => p >= b.a && p < b.b);
+      if (pi < 0) pi = parts.length - 1;
+      const len = Math.max(1, bounds[pi].b - bounds[pi].a);
+      timing[k] = clamp((p - bounds[pi].a) / len - 0.03, 0, 0.92);  // leve adelanto
+      plan[pi].push(k);
+    });
+    return { plan, timing };
   }
 
   // revela todos los pasos sin audio (modo pausa/manual)
@@ -412,6 +618,7 @@
       revealUpTo(999);
       State.playing = false; updatePlayBtn();
       if (State.autoplay && canAutoAdvance(s)) { setTimeout(() => { if (State.i === indexOf(s)) next(); }, 2500); }
+      else if (s.noauto) { showNextHint(); }
       return;
     }
     State.partIdx = clamp(pIdx, 0, parts.length - 1);
@@ -447,21 +654,16 @@
     a.playbackRate = State.rate;
     a.volume = State.volume;
     State.audio = a;
-    const gen = ++State.audioGen;              // token: descarta handlers de audios obsoletos
-    const fresh = () => State.audio === a && State.audioGen === gen;
 
     a.addEventListener('loadedmetadata', () => {
-      if (!fresh()) return;
       scheduleReveals(part, a.duration || estDuration(part));
     });
-    a.addEventListener('ended', () => { if (fresh()) onPartEnded(); });
+    a.addEventListener('ended', onPartEnded);
     a.addEventListener('error', () => {
-      if (!fresh()) return;
       // si falta el audio, usa duración estimada y revela igual
       const dur = estDuration(part);
       scheduleReveals(part, dur);
-      const t = setTimeout(() => { if (fresh()) onPartEnded(); }, dur * 1000 / State.rate);
-      State.revealTimers.push(t);            // rastreado para poder cancelarlo
+      setTimeout(onPartEnded, dur * 1000 / State.rate);
     });
 
     State.playing = true;
@@ -472,27 +674,19 @@
 
   function estDuration(part) {
     // ~14 caracteres por segundo de locución en español
-    return clamp((part.tts || '').length / 14, 2.2, 60);
+    return clamp((part.tts || part.text || '').length / 14, 2.2, 60);
   }
 
-  // programa el revelado de cada step: usa los tiempos de animación de la PPT
-  // (part.times alineados con part.steps) y si no hay, reparto proporcional.
+  // programa el revelado de cada step: sincronizado con la narración si hay
+  // timing calculado; si no, reparto uniforme dentro de la parte
   function scheduleReveals(part, dur) {
     clearRevealTimers();
     const steps = (State.plan && State.plan[State.partIdx]) || part.steps || [];
     const n = steps.length;
-    const tmap = {};
-    if (part.steps && part.times && part.times.length === part.steps.length) {
-      part.steps.forEach((s, i) => { if (typeof part.times[i] === 'number') tmap[s] = part.times[i]; });
-    }
+    const tm = State.stepTiming;
     steps.forEach((stp, k) => {
-      let delay;
-      if (tmap[stp] != null) {
-        delay = Math.min(tmap[stp], Math.max(0, dur - 1.2)) * 1000 / State.rate;
-      } else {
-        const frac = n <= 1 ? 0 : (k / n);
-        delay = frac * dur * 0.9 * 1000 / State.rate;
-      }
+      const frac = (tm && tm[stp] !== undefined) ? tm[stp] : (n <= 1 ? 0 : (k / n) * 0.9);
+      const delay = frac * dur * 1000 / State.rate;
       const t = setTimeout(() => {
         revealStep(stp);
         State.revealed = Math.max(State.revealed, stp);
@@ -511,10 +705,8 @@
   function onPartEnded() {
     const s = State.slides[State.i];
     const parts = s.parts || [];
-    const curPart = parts[State.partIdx];
-    if (!curPart) return;   // guarda: parte fuera de rango (audio obsoleto tras saltar)
     // asegura que los steps de esta parte queden revelados
-    ((State.plan && State.plan[State.partIdx]) || curPart.steps || []).forEach(revealStep);
+    ((State.plan && State.plan[State.partIdx]) || parts[State.partIdx].steps || []).forEach(revealStep);
     if (State.partIdx < parts.length - 1) {
       // ¿siguiente parte es feedback de quiz sin responder?
       const nextPart = parts[State.partIdx + 1];
@@ -530,11 +722,12 @@
       // fin de la diapositiva
       State.playing = false; updatePlayBtn();
       stopProgressLoop();
-      // solo se libera el gate del quiz si el usuario realmente respondió
-      if (s.type === 'quiz' && State.quizAnswered[s.id]) State.quizGatePassed[s.id] = true;
+      if (s.type === 'quiz') State.quizGatePassed[s.id] = true;
       saveProgress();
       if (State.autoplay && canAutoAdvance(s)) {
-        setTimeout(() => { if (State.playing === false && State.slides[State.i] === s) next({ force: true }); }, 650);
+        setTimeout(() => { if (State.playing === false && State.slides[State.i] === s) next(); }, 650);
+      } else if (s.noauto) {
+        showNextHint();
       }
     }
   }
@@ -543,14 +736,7 @@
 
   // ---------- control de audio ----------
   function stopAudioElementOnly() {
-    if (State.audio) {
-      const a = State.audio;
-      State.audioGen++;              // invalida cualquier handler pendiente de este audio
-      try { a.pause(); } catch (e) {}
-      a.onended = a.onerror = a.onloadedmetadata = null;
-      try { a.removeAttribute('src'); a.load(); } catch (e) {}
-      State.audio = null;
-    }
+    if (State.audio) { try { State.audio.pause(); } catch (e) {} State.audio.onended = null; State.audio = null; }
   }
   function stopAudio() {
     stopAudioElementOnly();
@@ -570,11 +756,9 @@
       pauseProgressLoop();
       updatePlayBtn();
     } else {
-      // reanudar el audio en pausa si sigue siendo válido; si no, recargar la parte
-      if (State.audio && State.audio.src && !State.audio.ended && State.audio.readyState > 0) {
+      if (State.audio && State.audio.currentime !== undefined && !State.audio.ended && State.audio.src) {
         State.audio.playbackRate = State.rate;
-        State.playing = true; updatePlayBtn();
-        State.audio.play().then(() => { resumeProgressLoop(); }).catch(() => { playFromPart(State.partIdx); });
+        State.audio.play().then(() => { State.playing = true; resumeProgressLoop(); updatePlayBtn(); }).catch(() => {});
       } else {
         playFromPart(State.partIdx);
       }
@@ -612,7 +796,7 @@
     const parts = s.parts || [];
     const fIdx = parts.findIndex(p => p.phase === 'f');
     if (fIdx >= 0) { State.partIdx = fIdx; loadAndPlayPart(); }
-    else { State.quizGatePassed[s.id] = true; if (State.autoplay) setTimeout(() => next({ force: true }), 800); }
+    else { State.quizGatePassed[s.id] = true; if (State.autoplay) setTimeout(next, 800); }
   }
 
   function markWaitingQuiz(on) {
@@ -706,7 +890,7 @@
   function updateChrome() {
     const s = State.slides[State.i];
     $('#mod-chip').textContent = State.model.modules[s.module];
-    $('#slidecount').textContent = 'Diapositiva ' + s.ppt + ' / 98';
+    $('#slidecount').textContent = 'Diapositiva ' + (State.i + 1) + ' / ' + State.slides.length;
     updatePlayBtn();
     // habilitar/deshabilitar prev-next
     $('#btn-prev').disabled = State.i === 0;
@@ -742,26 +926,16 @@
     $('#btn-forward').onclick = nextPart;
     $('#btn-replay').onclick = replaySlide;
 
-    $('#btn-index').onclick = () => {
-      if (isMobile()) $('#transcript').classList.add('hidden');
-      $('#sidebar').classList.toggle('hidden');
-      toggleActive('#btn-index', !$('#sidebar').classList.contains('hidden'));
-      syncScrim(); setTimeout(fitStage, 260);
-    };
-    $('#btn-transcript').onclick = () => {
-      if (isMobile()) $('#sidebar').classList.add('hidden');
-      $('#transcript').classList.toggle('hidden');
-      toggleActive('#btn-transcript', !$('#transcript').classList.contains('hidden'));
-      syncScrim(); setTimeout(fitStage, 260);
-    };
-    $('#btn-anexo').onclick = () => window.open('anexos/Caso-de-estudio-Alimentos-SA.pdf', '_blank');
+    $('#btn-index').onclick = () => { $('#sidebar').classList.toggle('hidden'); toggleActive('#btn-index', !$('#sidebar').classList.contains('hidden')); setTimeout(fitStage, 260); };
+    $('#btn-transcript').onclick = () => { $('#transcript').classList.toggle('hidden'); toggleActive('#btn-transcript', !$('#transcript').classList.contains('hidden')); setTimeout(fitStage, 260); };
+    $('#btn-anexo').onclick = () => window.open('anexos/Caso-de-estudio.pdf', '_blank');
     $('#btn-fs').onclick = toggleFullscreen;
-    $('#btn-ts-down').onclick = () => bumpTextSize(-1);
-    $('#btn-ts-up').onclick = () => bumpTextSize(1);
 
     $('#rate-sel').onchange = (e) => { State.rate = parseFloat(e.target.value); if (State.audio) State.audio.playbackRate = State.rate; saveProgress(); };
     $('#vol').oninput = (e) => { State.volume = parseFloat(e.target.value); if (State.audio) State.audio.volume = State.volume; saveProgress(); };
     $('#autoplay-toggle').onclick = () => { State.autoplay = !State.autoplay; setToggle($('#autoplay-toggle'), State.autoplay); saveProgress(); };
+    $('#fs-inc').onclick = () => { State.fontScale = clamp((State.fontScale || 0) + 1, 0, 2); applyFontScale(); saveProgress(); };
+    $('#fs-dec').onclick = () => { State.fontScale = clamp((State.fontScale || 0) - 1, 0, 2); applyFontScale(); saveProgress(); };
 
     // clic en barra de progreso -> saltar dentro de la parte
     $('#prog').onclick = (e) => {
