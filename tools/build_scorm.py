@@ -13,11 +13,11 @@ from xml.sax.saxutils import escape
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 args = [a for a in sys.argv[1:] if not a.startswith('--')]
 KEEP_MP3 = '--keep-mp3' in sys.argv
-OUTZIP = args[0] if args else os.path.join(ROOT, 'curso-gri-comunicacion-scorm12.zip')
+OUTZIP = args[0] if args else os.path.join(ROOT, 'curso-gri-materialidad-scorm12.zip')
 STAGE = os.path.join(os.path.dirname(OUTZIP) or '.', '_scorm_stage')
 CACHE = os.path.join(os.path.dirname(OUTZIP) or '.', '_scorm_audio_cache')
 
-TITLE = 'Tutorías GRI · Comunicación efectiva en los reportes de sostenibilidad'
+TITLE = 'Tutorías GRI · Materialidad de impacto'
 AAC_BITRATE = '64000'   # voz: 64k mono AAC ≈ transparente
 
 def audio_files():
