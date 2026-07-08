@@ -475,15 +475,24 @@
     return clamp((part.tts || '').length / 14, 2.2, 60);
   }
 
-  // programa el revelado de cada step proporcional a su longitud de texto
+  // programa el revelado de cada step: usa los tiempos de animación de la PPT
+  // (part.times alineados con part.steps) y si no hay, reparto proporcional.
   function scheduleReveals(part, dur) {
     clearRevealTimers();
     const steps = (State.plan && State.plan[State.partIdx]) || part.steps || [];
     const n = steps.length;
-    // reparto uniforme dentro de la parte, con un pequeño margen inicial
+    const tmap = {};
+    if (part.steps && part.times && part.times.length === part.steps.length) {
+      part.steps.forEach((s, i) => { if (typeof part.times[i] === 'number') tmap[s] = part.times[i]; });
+    }
     steps.forEach((stp, k) => {
-      const frac = n <= 1 ? 0 : (k / n);
-      const delay = frac * dur * 0.9 * 1000 / State.rate;
+      let delay;
+      if (tmap[stp] != null) {
+        delay = Math.min(tmap[stp], Math.max(0, dur - 1.2)) * 1000 / State.rate;
+      } else {
+        const frac = n <= 1 ? 0 : (k / n);
+        delay = frac * dur * 0.9 * 1000 / State.rate;
+      }
       const t = setTimeout(() => {
         revealStep(stp);
         State.revealed = Math.max(State.revealed, stp);
